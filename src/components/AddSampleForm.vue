@@ -1,5 +1,7 @@
 <script setup></script>
 
-<template></template>
+<template>
+<div>this is sample</div>
+</template>
 
 <style scoped></style>

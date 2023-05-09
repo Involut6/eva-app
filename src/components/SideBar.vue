@@ -1,5 +1,7 @@
 <script setup></script>
 
-<template></template>
+<template>
+    This is side bar
+</template>
 
 <style scoped></style>
