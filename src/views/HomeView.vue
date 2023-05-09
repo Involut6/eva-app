@@ -3,7 +3,8 @@ import SideBar from '../components/SideBar.vue';
 </script>
 
 <template>
-    <div>
+    <div class="flex">
       <SideBar />
+      <router-view></router-view>
     </div>
 </template>
