@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView,
       children: [
         {
-          path: '/samples',
+          path: '/',
           name: 'Samples',
           component: import('../components/samplePage.vue')
         },
