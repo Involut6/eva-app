@@ -25,13 +25,6 @@
         <img src="" alt="">
        <!-- section -->
         <div class="bg-[whitesmoke] space-y-3 w-full h-fit px-[30px] py-[50px]">
-          <div class="flex gap-2">
-            <p><a href="#" class="text-gray-700 hover:text-[#009efb]">Home</a></p>
-            <p>/</p>
-            <p><a href="#" class="text-gray-700 hover:text-[#009efb]">patient</a></p>
-            <p>/</p>
-            <p><a href="#" class="text-gray-500 hover:text-[#009efb]">Patient list</a></p>
-          </div>
           
         <div class="bg-white w-full shadow-xl pb-9">
             <div class="space-y-5">

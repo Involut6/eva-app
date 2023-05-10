@@ -2,7 +2,7 @@
 
 <template>
     <div>
-        <div class="bg-[#009efb] py-8 fixed h-[100%] top-0 left-0 w-[295px] overflow-auto">
+        <div class="bg-[#009efb] py-8 sticky h-[100%] top-0 left-0 overflow-auto">
             <h1 class="mb-6 text-white text-center text-3xl font-semibold">EnvaAccord</h1>
         <div class="flex flex-col items-center mb-10">
             <div class="w-fit mb-[9px] rounded-[50%] p-[6px] border-[5px] border-b-white border-b-l-white border-t-[#009efb] border-l-[#009efb] border-r-white">
