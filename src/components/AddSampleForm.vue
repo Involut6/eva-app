@@ -32,11 +32,11 @@ export default defineComponent({
                 <section class="px-[30px] py-[20px]">
                     <div class="sm:flex gap-[10%] ">
                 <div>
-                    <h1 class="text-[20px] font-[400]">Sample name</h1>
-                    <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px]" type="text">
+                    <h1 class="font-[400]">Sample name</h1>
+                    <input class="w-[230px] md:w-[300px] border border-gray-300 border-1 p-[4px] rounded-[5px]" type="text">
                 </div>
                 <div>
-                    <h1 class="text-[20px] font-[400]">Sample status</h1>
+                    <h1 class="font-[400]">Sample status</h1>
                     <select class="border  border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
                         <option>Samples Received</option>
                         <option>Samples in Preparation</option>

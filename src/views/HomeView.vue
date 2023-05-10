@@ -5,11 +5,15 @@ import Navbar from '../components/Navbar.vue';
 </script>
 
 <template>
-  <div class="h-screen overflow-hidden">
+  <div class="h-screen relative">
+    <div class="relative">
+      <Navbar class="fixed top-0" />
+    </div>
     <div class="lg:flex min-h-screen">
-      <SideBar class="w-[23vw]" />
-      <div class="w-screen lg:w-[77vw] bg-[whitesmoke] overflow-y-scroll">
-        <Navbar class="shadow" />
+      <div class="relative">
+        <SideBar class="w-[23vw]" />
+      </div>
+      <div class="w-screen h-fit lg:w-[77vw] pt-16 lg:ml-[23vw] bg-[whitesmoke] overflow-y-scroll">
         <router-view></router-view>
       </div>
       <Footer />

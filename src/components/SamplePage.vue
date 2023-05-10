@@ -5,10 +5,10 @@ export default defineComponent({
     data() {
         return {
             tableRows: [
-               {id: 1, title: "ola", dateCreated: "Aug 29, 2000", status: 'In progress'},
-               {id:2, title: "AbdulQayum", dateCreated: "Aug 29, 2000", status: 'In progress'},
-               {id: 3, title: "Emmanuel", dateCreated: "Aug 29, 20 00", status: 'In progress'},
-               {id:4, title: "Hammed", dateCreated: "Aug 29, 2000", status: 'In progress'}
+               {id: 1, title: "ola", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id:2, title: "AbdulQayum", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id: 3, title: "Emmanuel", dateCreated: "Aug 29, 20 00", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id:4, title: "Hammed", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
             ]
         }
     }
@@ -28,7 +28,6 @@ export default defineComponent({
             <div class="space-y-5">
                 <div class="flex justify-between border-b px-[20px] py-[30px]">
                     <p class="text-lg font-semibold">Sample List</p>
-                    <p><a href="#" class="text-[#009efb]">Add Patient</a></p>
                 </div>
                 <div class="flex justify-between px-[20px]">
                     <div class="flex gap-2 items-center">
