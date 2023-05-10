@@ -7,13 +7,13 @@ import Navbar from '../components/Navbar.vue';
 <template>
   <div class="h-screen relative">
     <div class="relative">
-      <Navbar class="fixed top-0" />
+      <Navbar class="sticky top-0" />
     </div>
     <div class="lg:flex min-h-screen">
       <div class="relative">
         <SideBar class="w-[23vw]" />
       </div>
-      <div class="w-screen h-fit lg:w-[77vw] pt-16 lg:ml-[23vw] bg-[whitesmoke] overflow-y-scroll">
+      <div class="w-screen h-fit lg:w-[77vw] pb-20 lg:pb-0 lg:ml-[23vw] bg-[whitesmoke] overflow-y-scroll">
         <router-view></router-view>
       </div>
       <Footer />
