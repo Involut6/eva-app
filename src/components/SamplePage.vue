@@ -23,14 +23,14 @@ export default defineComponent({
 
         <img src="" alt="">
        <!-- section -->
-        <div class="space-y-3 w-full h-fit px-[30px] py-[50px]">
-        <div class="bg-white w-full shadow-xl pb-9">
+        <div class="space-y-3 w-full h-fit px-[30px] py-[50px] max-[800px]:px-[0]">
+        <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
             <div class="space-y-5">
                 <div class="flex justify-between border-b px-[20px] py-[30px]">
                     <p class="text-lg font-semibold">Sample List</p>
                     <p><a href="#" class="text-[#009efb]">Add Patient</a></p>
                 </div>
-                <div class="flex justify-between px-[20px]">
+                <div class="flex justify-between px-[20px] max-[375px]:flex-col items-center gap-3">
                     <div class="flex gap-2 items-center">
                       <p>Show</p>
                       <select class="border border-black">
@@ -40,7 +40,7 @@ export default defineComponent({
                         <option value="100">100</option>
                       </select>
                     </div>
-                    <input type="text" class="border border-gray-300 rounded-[20px] p-1" placeholder="Show Data....">
+                    <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Show Data....">
                 </div>
                 <div class="min-w-[500px] overflow-auto">
                     <table class="w-full bg-gray-100">
