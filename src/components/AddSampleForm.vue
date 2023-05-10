@@ -184,13 +184,13 @@ export default defineComponent({
                 
                <section class="relative w-[300px] ">
                 <h1 class="text-[20px] font-[400] pt-[10px]">List of Analysis</h1>
-               <div class="w-[240px] h-[200px] pt-[3px] px-[10px]  overflow-hidden  overflow-scroll  border border-gray-300 border-1 sm:w-fit overflow-y-scroll">
+               <div class="relative w-fit h-[250px] py-2 shadow rounded-lg px-[10px] border-1 sm:w-fit overflow-y-scroll">
                  <table>
                     <tr v-for="item in analysis">
                     <td class="pe-[20px] py-[5px]">
                         <div class="flex gap-[5px] justify-start item-center ">
                             <input type="checkbox">
-                            <p>{{item.title}}</p>
+                            <p class="w-fit">{{item.title}}</p>
                         </div>
                     </td>
                     <td class="ps-[20px]"> 
@@ -201,7 +201,11 @@ export default defineComponent({
                     </td>
                  </tr>
                  </table>
+                 
                  </div>
+                 <!-- <div class="fixed bottom-0">
+                    <p class="mx-auto w-fit">Select</p>
+                 </div> -->
                  <!-- <button class="bg-black text-white my-[10px] px-[35px] py-[10px] font-[600] rounded-[15px] absolute right-[0]">Add Analysis</button>  -->
                </section>
                
