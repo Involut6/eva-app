@@ -11,7 +11,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="fixed top-0 left-0">
+    <div>
         <div class="bg-[#009efb] hidden lg:block py-8 h-screen overflow-hidden">
             <h1 class="mb-6 text-white text-center text-3xl font-semibold">EnvaAccord</h1>
             <div class="flex flex-col items-center mb-10">
