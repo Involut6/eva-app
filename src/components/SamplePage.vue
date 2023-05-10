@@ -27,7 +27,7 @@ export default defineComponent({
         <div class="bg-white w-full shadow-xl pb-9">
             <div class="space-y-5">
                 <div class="flex justify-between border-b px-[20px] py-[30px]">
-                    <p class="font-bold">Sample List</p>
+                    <p class="text-lg font-semibold">Sample List</p>
                     <p><a href="#" class="text-[#009efb]">Add Patient</a></p>
                 </div>
                 <div class="flex justify-between px-[20px]">
