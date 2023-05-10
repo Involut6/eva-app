@@ -16,6 +16,7 @@ export default defineComponent({
 </script>
 
 <template>
+
     <div class="Container w-full">
         <div class="bg-[#009efb] w-full h-[10vh] flex gap-8 items-center justify-end px-[30px]">
            <div class="flex gap-1">
