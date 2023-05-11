@@ -5,10 +5,10 @@ export default defineComponent({
     data() {
         return {
             tableRows: [
-               {id: 1, title: "ola", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:2, title: "AbdulQayum", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id: 3, title: "Emmanuel", dateCreated: "Aug 29, 20 00", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:4, title: "Hammed", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
+               {id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+               {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
             ]
         }
     }
@@ -29,8 +29,8 @@ export default defineComponent({
                 <div class="flex justify-between border-b px-[20px] py-[30px]">
                     <p class="text-lg font-semibold">Sample List</p>
                 </div>
-                <div class="flex justify-between px-[20px] max-[375px]:flex-col items-center gap-3">
-                    <div class="flex gap-2 items-center">
+                <div class="flex justify-end px-[20px] max-[375px]:flex-col items-center gap-3">
+                    <!-- <div class="flex gap-2 items-center">
                       <p>Show</p>
                       <select class="border border-black">
                         <option value="10">10</option>
@@ -38,13 +38,14 @@ export default defineComponent({
                         <option value="50">50</option>
                         <option value="100">100</option>
                       </select>
-                    </div>
-                    <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Show Data....">
+                    </div> -->
+                    <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Search....">
                 </div>
                 <div class="min-w-[500px] overflow-auto">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#009efb] h-[8vh]">
                         <th>Title</th>
+                        <th>Id</th>
                         <th>Date created</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -52,6 +53,7 @@ export default defineComponent({
                     <tbody>
                         <tr class="text-center h-[10vh] border border-gray-300" :class="tableRows.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in tableRows" :key="row.id">
                             <td>{{ row.title }}</td>
+                            <td>{{ row.id }}</td>
                             <td>{{ row.dateCreated }}</td>
                             <td>{{ row.status }}</td>
                             <td><div class="flex space-x-2 items-center justify-center">

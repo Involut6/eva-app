@@ -206,7 +206,7 @@ export default defineComponent({
                </section>
                
                <div class="flex justify-end items-end  my-[15px]">
-                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-[15px]">Submit</button>
+                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-[15px]">Upload</button>
                </div>  
                 </section>
             </div>
