@@ -20,7 +20,7 @@ export default defineComponent({
                 <p class="text-sm">Enter the sample Id to check the status and result of your sample</p>
             </div>
             <label>Sample ID</label>
-            <input placeholder="Enter sample Id" class="block focus:outline-none w-full" v-model="id" />
+            <input placeholder="Enter sample Id" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" v-model="id" />
             <button @click="() => showSample = true" :class="id === '' ? 'bg-[#009efb]' : 'bg-gray-300'" class="font-medium text-white p-2 rounded-lg mt-4 w-full text-center">View Sample</button>
         </div>
     </div>

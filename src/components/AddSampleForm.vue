@@ -1,143 +1,20 @@
-<script>
-import { defineComponent } from 'vue';
+<script setup>
+import { storeToRefs } from 'pinia';
+import useSampleStore from '../stores/sample';
+import { ref } from 'vue';
 
-export default defineComponent({
-    data() {
-        return {
-            analysis: [
-                {
-                    title: 'Temperature',
-                    status: ''
-                },
-                {
-                    title: 'Appearance',
-                    status: ''
-                },
-                {
-                    title: 'Colour',
-                    status: ''
-                },
-                {
-                    title: 'Conductivity',
-                    status: ''
-                },
-                {
-                    title: 'TDS',
-                    status: ''
-                },
-                {
-                    title: 'TSS',
-                    status: ''
-                },
-                {
-                    title: 'Turbidity',
-                    status: ''
-                },
-                {
-                    title: 'Salinity',
-                    status: ''
-                },
-                {
-                    title: 'Dissolved Oxygen',
-                    status: ''
-                },
-                {
-                    title: 'BOD 5',
-                    status: ''
-                },
-                {
-                    title: 'COD',
-                    status: ''
-                },
-                {
-                    title: 'Alkalinity',
-                    status: ''
-                },
-                {
-                    title: 'Hardness',
-                    status: ''
-                },
-                {
-                    title: 'Chloride',
-                    status: ''
-                },
-                {
-                    title: 'Nitrate',
-                    status: ''
-                },
-                {
-                    title: 'Sulphate',
-                    status: ''
-                },
-                {
-                    title: 'Total Phosphorus',
-                    status: ''
-                },
-                {
-                    title: 'Ammonia',
-                    status: ''
-                },
-                {
-                    title: 'Total Nitrogen',
-                    status: ''
-                },
-                {
-                    title: 'Sulphide',
-                    status: ''
-                },
-                {
-                    title: 'Heavy metals',
-                    status: ''
-                },
-                {
-                    title: 'Total Petroleum Hydrocarbon',
-                    status: ''
-                },
-                {
-                    title: 'Polycyclic Aromatic Hydrocarbon',
-                    status: ''
-                },
-                {
-                    title: 'BTEX',
-                    status: ''
-                },
-                {
-                    title: 'Oil/Grease',
-                    status: ''
-                },
-                {
-                    title: 'Total Coliform Count',
-                    status: ''
-                },
-                {
-                    title: 'E.Coli',
-                    status: ''
-                },
-                {
-                    title: 'THUB',
-                    status: ''
-                },
-                {
-                    title: 'THUF',
-                    status: ''
-                },
-                {
-                    title: 'THB',
-                    status: ''
-                },
-                {
-                    title: 'THF',
-                    status: ''
-                },
-                {
-                    title: 'Odour',
-                    status: ''
-                }
+const { analysis, selectedAnalysis, samples } = storeToRefs(useSampleStore());
 
-            ]
-        }
-    }
+const newSample = ref({
+    title: '',
+    status: '',
+    sampleAnalysis: selectedAnalysis
 })
+
+
+function addSample() {
+    samples.value.push(newSample)
+}
 </script>
 
 <template>
@@ -145,14 +22,13 @@ export default defineComponent({
         <div class="w-[100%] h-[100vh] p-[30px]">
              <div class="flex space-x-2 items-center">
                 <p>Home</p>
-            
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6l-6-6z"/></svg>
                 <p class="text-[#009efb]">Add samples</p>
              </div>
-
             <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
                 <div class="py-[20px] border-b flex justify-between px-[30px] ">
                     <h1 class="font-[600] text-[18px]">Add Sample</h1>
-                </div>            
+                </div>
                 <section class="px-[30px] py-[20px]">
                     <div class="sm:flex gap-[10%] ">
                       <div class="py-[10px] sm:py-[20px]">
@@ -165,15 +41,15 @@ export default defineComponent({
                         <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none" type="text" placeholder="Enter Last Name">
                       </div>
                     </div>
-
                     <div class="sm:flex gap-[10%] ">
                 <div class="py-[10px]">
                     <h1 class="text-[20px] font-[400]">Sample name</h1>
-                    <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none" type="text">
+                    <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none" v-model="newSample.title" type="text">
                 </div>
                 <div class="py-[10px]">
                     <h1 class="text-[20px] font-[400]">Sample status</h1>
-                    <select class="border  border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                    <select class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]" v-model="newSample.status">
+                        <option disabled value="">Status</option>
                         <option>Received</option>
                         <option>Preparation</option>
                         <option>Analysis in progress</option>
@@ -182,35 +58,24 @@ export default defineComponent({
                 </div>
                </div>
                 
-               <section class="relative w-[300px] ">
+               <section class=" w-[300px] ">
                 <h1 class="text-[20px] font-[400] pt-[10px]">List of Analysis</h1>
-               <div class="relative w-fit h-[250px] py-2 shadow rounded-lg px-[10px] border-1 sm:w-fit overflow-y-scroll">
-                 <table>
-                    <tr v-for="item in analysis">
-                    <td class="pe-[20px] py-[5px]">
+               <div class="relative w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
+                    <div v-for="item in analysis" class="relative flex w-full justify-between items-center">
                         <div class="flex gap-[5px] justify-start item-center ">
-                            <input type="checkbox">
+                            <input type="checkbox" :value="item" v-model="selectedAnalysis">
                             <p class="w-fit">{{item.title}}</p>
                         </div>
-                    </td>
-                    <td class="ps-[20px]"> 
-                        <select class="outline-none" >
-                            <option value="">Ongoing</option>
-                            <option value="">Completed</option>
+                        <select class="focus:outline-none" v-model="item.status">
+                            <option value="" disabled>Status</option>
+                            <option v-for="option in item.analysisStatus" :value="option">{{ option }}</option>
                         </select>
-                    </td>
-                 </tr>
-                 </table>
-                 
+                    </div>
                  </div>
-                 <!-- <div class="fixed bottom-0">
-                    <p class="mx-auto w-fit">Select</p>
-                 </div> -->
-                 <!-- <button class="bg-black text-white my-[10px] px-[35px] py-[10px] font-[600] rounded-[15px] absolute right-[0]">Add Analysis</button>  -->
                </section>
                
                <div class="flex justify-end items-end  my-[15px]">
-                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-[15px]">Upload</button>
+                <button @click="addSample" class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Upload</button>
                </div>  
                 </section>
             </div>

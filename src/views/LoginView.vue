@@ -1,21 +1,22 @@
 <template>
   <div class="">
-    <div class="flex justify-center items-center h-screen">
-      <div class="bg-white w-[400px] h-fit flex flex-col px-[20px] py-[30px] gap-y-[20px] rounded-[15px] shadow-2xl">
-        <div class="mx-auto font-bold text-xl">LOGO</div>
+    <div class="flex justify-center items-center h-screen bg-[whitesmoke]">
+      <div class="w-[400px] h-fit">
+        <div class="mx-auto font-bold text-xl w-full text-center mb-4">LOGO</div>
 
-        <p class="font-semibold text-[26px] text-gray-800">Sign in</p>
+        <p class="font-semibold text-2xl text-gray-800">Sign in</p>
+        <p class="">Sign in to manage samples and feedbacks</p>
         
-        <form class="flex flex-col justify-between h-fit gap-y-[15px]">  
-          <div>
-            <p class="font-medium text-gray-800 relative">Email</p>
-            <input type="Email" class="outline-none h-[30px] rounded-[5px] border border-gray-300 border-solid px-[10px] py-[5px] w-full" placeholder="Enter your Email">
+        <div class="h-fit mt-5">  
+          <div class="mb-4">
+            <p class="text-gray-800">Email</p>
+            <input type="Email" class="outline-none h-[30px] bg-[whitesmoke] rounded-[5px] border border-gray-300 px-[10px] py-3 w-full" placeholder="Enter your Email">
           </div>
           
-          <div>
-            <p class="font-medium text-gray-800 relative">Password</p>
-            <div class="flex border border-gray-300 border-solid px-[10px] justify-between py-[5px] rounded-[5px] items-center h-[30px]">
-              <input type="Password" class="outline-none" placeholder="Enter your Password">
+          <div class="mb-4">
+            <p class="text-gray-800">Password</p>
+            <div class="flex border border-gray-300 px-[10px] justify-between py-3 rounded-[5px] items-center h-[30px]">
+              <input type="Password" class="outline-none bg-[whitesmoke]" placeholder="Enter your Password">
             
               <div class="flex" id="eye-icons">
                 <div>
@@ -33,10 +34,9 @@
             </div>
           </div>
 
-          <input type="submit" value="Sign in" class="bg-[#009efb] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">
-        </form>
-
-        <p class="text-center text-gray-500">Forgot Password? <button class="text-[#009efb]">Recover here</button></p>
+          <router-link class="" to="/"><button type="submit" class="bg-[#009efb] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">Sign in</button></router-link>
+          <p class="text-center text-sm text-gray-500">Forgot Password? <span class="text-[#009efb]">Recover here</span></p>
+        </div>
       </div>
     </div>
   </div>
