@@ -9,7 +9,8 @@ export default defineComponent({
                {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
                {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
                {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
-            ]
+            ],
+            isDeleteModal: false
         }
     }
 })
@@ -58,10 +59,16 @@ export default defineComponent({
                             <td>{{ row.id }}</td>
                             <td>{{ row.dateCreated }}</td>
                             <td>{{ row.status }}</td>
-                            <td><div class="flex space-x-2 items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-[#009efb] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="delete-icon text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
-                            </div></td>
+                            <td>
+                                <div class="flex space-x-2 items-center justify-center">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-[#009efb] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
+                                    </div>
+                                    <div @click="isDeleteModal = true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="delete-icon text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -72,17 +79,20 @@ export default defineComponent({
         </div>
 
         <!-- when the delete button is clicked -->
-       <div class="flex justify-center absolute top-0 left-0 right-0">
-        <div class="delete-box bg-white w-[50%] h-fit rounded-lg shadow-lg p-5 space-y-3">
-            <p class="text-[20px] w-full">Are you sure you want to delete <span>clicked table</span> sample list</p>
-            <div class="flex justify-between">
-                <p class="text-[19px] h-fit w-fit text-white cursor-pointer bg-[#009efb] px-2 rounded-[10px] active:bg-gray-800">yes</p>
-                <p class="text-[19px] h-fit w-fit text-white cursor-pointer bg-[#009efb] px-2 rounded-[10px] active:bg-gray-800">no</p>
-            </div>
-        </div>
-       </div>
 
     </div>
+    <Teleport to="body">
+        <div @click.self="isDeleteModal = false" v-if="isDeleteModal" class="fixed top-0 left-0 h-screen w-screen z-20 flex justify-center items-center bg-opacity-75 bg-black">
+        <div class="z-30 bg-white w-[343px] lg:w-[450px] h-fit rounded-lg shadow-lg p-5">
+            <p class="text-xl font-semibold">Delete Sample</p>
+            <p class="w-full">Are you sure you want to delete this sample?</p>
+            <div class="flex space-x-3 mt-8 w-fit ml-auto mr-0">
+                <button class="bg-red-600 text-white px-3 py-2 rounded-lg font-medium">Delete</button>
+                <button class="bg-[#009EFB] text-white px-3 py-2 rounded-lg font-medium" @click="isDeleteModal = false">Cancel</button>
+            </div>
+        </div>
+    </div>
+    </Teleport>
 </template>
 
 <style scoped>

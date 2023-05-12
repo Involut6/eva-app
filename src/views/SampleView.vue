@@ -1,7 +1,19 @@
-<script setup></script>
+<script>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    data() {
+        return {
+            showSample: false,
+            id: ''
+        }
+    }
+})
+</script>
 
 <template>
-    <div class="container">
+    <div class="container mx-auto my-[200px]" :class="showSample ? 'w-[600px]' : 'w-fit'">
+        <div v-if="showSample" class="">
         <header>
             Sample Information
         </header>
@@ -78,32 +90,31 @@
                     </div>
                 </div>
             </div>
-            <button>Download Result</button>
+            <button class="button">Download Result</button>
         </div>
         
+        </div>
+        <div v-else>
+            <p class="text-xl font-semibold mb-4 w-full text-center">Logo</p>
+            <div class="w-[350px] mb-8 text-center mx-auto">
+                <p class="text-lg font-semibold">Enter Sample ID</p>
+                <p class="text-sm">Enter the sample Id to check the status and result of your sample</p>
+            </div>
+            <label>Sample ID</label>
+            <input placeholder="Enter sample Id" class="block focus:outline-none w-full" v-model="id" />
+            <button @click="() => showSample = true" :class="id === '' ? 'bg-[#009efb]' : 'bg-gray-300'" class="font-medium text-white p-2 rounded-lg mt-4 w-full text-center">View Sample</button>
+        </div>
     </div>
 </template>
 
 <style scoped>
-
-* {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-   
-
-}
-
-body {
-    color: darkgray;
-}
 
 .hide {
     display: none;
 }
 
 input {
-    padding: 0.5em 2em;
+    padding: 0.5em;
     border-radius: 10px;
     border: 1px solid lightgray;
 }
@@ -151,9 +162,8 @@ input {
 .container {
     /* icones */
     box-shadow: 1px 1px 4px 3px lightgray;
-    width: 700px;
+    /* width: 700px; */
     border-radius: 20px;
-    margin: 6rem auto;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     padding: 1em 1.2em;
     /* color: red; */
@@ -179,7 +189,7 @@ span {
     font-weight: bold;
 }
 
-button {
+.button {
     padding: 0.8em;
     /* border: 2px solid #009efb; */
     background-color: lightgray;
