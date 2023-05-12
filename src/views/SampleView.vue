@@ -1,7 +1,19 @@
-<script setup></script>
+<script>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    data() {
+        return {
+            showSample: false,
+            id: ''
+        }
+    }
+})
+</script>
 
 <template>
-    <div class="container">
+    <div class="container mx-auto my-[200px]" :class="showSample ? 'w-[600px]' : 'w-fit'">
+        <div v-if="showSample" class="">
         <header>
             Sample Information
         </header>
@@ -60,7 +72,7 @@
                     
                     <div class="status">
                         <div class="icons">
-                        <p>Ongoing</p>
+                        <p>In progress</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14"><g fill="none" stroke="#009efb" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13.5a6.5 6.5 0 1 1 6.21-8.41M13.5 7v.5"/><path stroke-dasharray=".889 1.778" d="M13.11 9.23a6.51 6.51 0 0 1-2.79 3.36"/><path d="m9.53 13l-.47.18"/></g></svg>
                         </div>
                         <div class="icons">
@@ -68,7 +80,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill="#009efb" d="M14 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zM7 12.414L3.293 8.707l1.414-1.414L7 9.586l4.793-4.793l1.414 1.414L7 12.414z"/></svg>
                         </div>
                         <div class="icons">
-                        <p>Ongoing</p>
+                        <p>In progress</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14"><g fill="none" stroke="#009efb" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13.5a6.5 6.5 0 1 1 6.21-8.41M13.5 7v.5"/><path stroke-dasharray=".889 1.778" d="M13.11 9.23a6.51 6.51 0 0 1-2.79 3.36"/><path d="m9.53 13l-.47.18"/></g></svg>
                         </div>
                         <div class="icons">
@@ -78,32 +90,31 @@
                     </div>
                 </div>
             </div>
-            <button>Download Result</button>
+            <button class="button">Download Result</button>
         </div>
         
+        </div>
+        <div v-else>
+            <p class="text-xl font-semibold mb-4 w-full text-center">Logo</p>
+            <div class="w-[350px] mb-8 text-center mx-auto">
+                <p class="text-lg font-semibold">Enter Sample ID</p>
+                <p class="text-sm">Enter the sample Id to check the status and result of your sample</p>
+            </div>
+            <label>Sample ID</label>
+            <input placeholder="Enter sample Id" class="block focus:outline-none w-full" v-model="id" />
+            <button @click="() => showSample = true" :class="id === '' ? 'bg-[#009efb]' : 'bg-gray-300'" class="font-medium text-white p-2 rounded-lg mt-4 w-full text-center">View Sample</button>
+        </div>
     </div>
 </template>
 
 <style scoped>
-
-* {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-   
-
-}
-
-body {
-    color: darkgray;
-}
 
 .hide {
     display: none;
 }
 
 input {
-    padding: 0.5em 2em;
+    padding: 0.5em;
     border-radius: 10px;
     border: 1px solid lightgray;
 }
@@ -151,9 +162,8 @@ input {
 .container {
     /* icones */
     box-shadow: 1px 1px 4px 3px lightgray;
-    width: 700px;
+    /* width: 700px; */
     border-radius: 20px;
-    margin: 6rem auto;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     padding: 1em 1.2em;
     /* color: red; */
@@ -179,7 +189,7 @@ span {
     font-weight: bold;
 }
 
-button {
+.button {
     padding: 0.8em;
     /* border: 2px solid #009efb; */
     background-color: lightgray;
