@@ -1,6 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 
+
 export default defineComponent({
     data() {
         return {
@@ -93,6 +94,69 @@ export default defineComponent({
         </div>
     </div>
     </Teleport>
+
+    <!-- editing  sample -->
+    <Teleport to="body">
+    <div class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
+     <div class="bg-white w-fit p-[30px]">
+             <div class="flex space-x-2 items-center">
+                <p>Home</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6l-6-6z"/></svg>
+                <p class="text-[#009efb]">Edit sample</p>
+             </div> 
+            <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
+                <div class="py-[20px] border-b flex justify-between px-[30px] ">
+                    <h1 class="font-[600] text-[18px]">Edit</h1>
+                </div>
+                <div class="overflow-auto">
+                <div class="px-[30px] py-[20px]"> 
+                    <div class="sm:flex gap-[10%] ">
+                      <div class="py-[10px] sm:py-[20px]">
+                        <h1 class="text-[20px] font-[400]">First Name</h1>
+                        <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none" type="text" placeholder="Enter First Name">
+                      </div>
+
+                      <div class="py-[10px] sm:py-[20px]">
+                        <h1 class="text-[20px] font-[400]">Last Name</h1>
+                        <input class="w-[230px]  md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none" type="text" placeholder="Enter Last Name">
+                      </div>
+                    </div>
+                    <div class="sm:flex gap-[10%] ">
+                <div class="py-[10px]">
+                    <h1 class="text-[20px] font-[400]">Sample name</h1>
+                    <input class="w-[230px] md:w-[300px] lg:w-[400px] border  border-solid border-gray-300 border-1 p-[4px] rounded-[5px] focus:outline-none"  type="text">
+                </div>
+                <div class="py-[10px]">
+                    <h1 class="text-[20px] font-[400]">Sample status</h1>
+                    <select class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                        <option disabled value="">Status</option>
+                        <option>Received</option>
+                        <option>Preparation</option>
+                        <option>Analysis in progress</option>
+                        <option>Analysis Completed</option>
+                    </select>
+                </div>
+               </div>
+                
+               <section class=" w-[300px] ">
+                <h1 class="text-[20px] font-[400] pt-[10px]">List of Analysis</h1>
+              
+               </section>
+               
+               <div class="flex justify-end items-end my-[15px]">
+                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Update</button>
+               </div> 
+            </div>
+            </div>
+            </div>
+        
+        
+        </div> 
+    </div>  
+
+    </Teleport> 
+
+
 </template>
 
 <style scoped>
