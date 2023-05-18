@@ -18,7 +18,9 @@ export default defineComponent({
           <div class="w-full h-full bg-black opacity-60 absolute">
             <img src="../assets/Kinetic-Labs-access-to-lab-space-and-facilities.jpg" alt="" class="w-full h-full">
           </div>
-          <p class="absolute z-10 font-semibold text-2xl text-white bottom-[5%] left-[5%]">We are a leading provider of specialised environmental and sustainability risk management advisory services in Africa.</p> 
+          <div class="absolute z-10 bottom-[5%] text-center">
+            <h1 class="font-semibold text-2xl text-white">EnvAccord</h1>
+            <p class="font-semibold text-2xl text-white">We are a leading provider of specialised environmental and sustainability risk management advisory services in Africa.</p></div> 
         </div>
 
         <div class="bg-[white] h-[520px] w-[500px] rounded-e-[15px] pt-[50px] px-[100px] text-center">
