@@ -97,7 +97,7 @@ export default defineComponent({
 
     <!-- editing  sample -->
     <Teleport to="body">
-    <div class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black hidden">
+    <div class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
      <div class="bg-white w-fit p-[30px]">
              <div class="flex space-x-2 items-center">
                 <p>Home</p>
