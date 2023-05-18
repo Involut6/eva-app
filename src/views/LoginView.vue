@@ -34,8 +34,8 @@
             </div>
           </div>
 
-          <router-link class="" to="/"><button type="submit" class="bg-[#009efb] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">Sign in</button></router-link>
-          <p class="text-center text-sm text-gray-500">Forgot Password? <span class="text-[#009efb]">Recover here</span></p>
+          <router-link class="" to="/"><button type="submit" class="bg-[#0000fe] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">Sign in</button></router-link>
+          <p class="text-center text-sm text-gray-500">Forgot Password? <span class="text-[#0000fe]">Recover here</span></p>
         </div>
       </div>
     </div>
