@@ -7,9 +7,9 @@ import Navbar from '../components/Navbar.vue';
 <template>
   <div class="relative h-screen">
     <div class="min-h-screen">
-      <SideBar class="w-[24%] fixed top-0 left-0 z-10" />
-      <div class="relative w-screen lg:w-[76%] lg:ml-[24%] bg-[whitesmoke] pb-10">
-        <Navbar class="shadow" />
+      <Navbar class="shadow" />
+      <SideBar class="w-[20%] fixed top-[70px] left-0 z-1" />
+      <div class="relative w-screen h-fit lg:w-[80%] lg:ml-[20%] bg-[#E8EBFC] pb-10">
         <router-view></router-view>
       </div>
       <Footer />

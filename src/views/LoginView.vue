@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-gray-300 w-full h-screen pt-[60px]">
-      <div class=" w-fit h-fit mx-auto  flex shadow-2xl">
+  <div class="bg-gray-300 w-full h-screen flex items-center justify-center">
+      <div class="w-fit h-fit flex shadow-2xl">
         <div class="h-[520px] w-[500px] bg-[#0000ff] rounded-s-[15px] bg-[url('../assets/Lab-1.jpg')] bg-no-repeat bg-cover overflow-hidden">
           <!-- <div class="w-full h-full bg-[#0000ff] opacity-60"></div> -->
         </div>
