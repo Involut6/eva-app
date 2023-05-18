@@ -35,7 +35,6 @@
             </div>
           </div>
         </div>
-
         <router-link class="" to="/"><button type="submit" class="bg-[#0000ff] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">Sign in</button></router-link>
         <p class="text-center text-sm text-gray-500 pt-[20px]">Forgot Password? <span class="text-[#009efb] cursor-pointer">Recover here</span></p>
       </div>

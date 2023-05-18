@@ -12,10 +12,10 @@ export default defineComponent({
 
 <template>
     <div>
-        <div class="bg-[#009efb] hidden lg:block py-8 h-screen overflow-hidden">
-            <h1 class="mb-6 text-white text-center text-3xl font-semibold">EnvaAccord</h1>
+        <div class="bg-[#0000fe] hidden lg:block py-8 h-screen overflow-hidden">
+            <h1 class="mb-6 text-white text-center text-3xl font-semibold">Env<span class="text-[#99ff00]">Accord</span></h1>
             <div class="flex flex-col items-center mb-10">
-                <div class="w-fit mb-[9px] rounded-[50%] p-[6px] border-[5px] border-b-white border-b-l-white border-t-[#009efb] border-l-[#009efb] border-r-white">
+                <div class="w-fit mb-[9px] rounded-[50%] p-[6px] border-[5px] border-b-white border-b-l-white border-t-[#0000fe] border-l-[#0000fe] border-r-white">
                     <div class="bg-black w-[80px] h-[80px] rounded-[50%]"></div>
                 </div>
                 <p class="text-white text-md">Admin</p>

@@ -62,7 +62,7 @@ export default function useSampleStore() {
         },
         {
            id: 10,
-            title: 'BOD 5',
+            title: 'BOD',
             status: '',
             analysisStatus: ['In progress', 'Completed']
         },
@@ -134,13 +134,13 @@ export default function useSampleStore() {
         },
         {
            id: 22,
-            title: 'Total Petroleum Hydrocarbon',
+            title: 'TPH',
             status: '',
             analysisStatus: ['In progress', 'Completed']
         },
         {
            id: 23,
-            title: 'Polycyclic Aromatic Hydrocarbon',
+            title: 'PAH',
             status: '',
             analysisStatus: ['In progress', 'Completed']
         },
@@ -158,7 +158,7 @@ export default function useSampleStore() {
         },
         {
            id: 26,
-            title: 'Total Coliform Count',
+            title: 'TCC',
             status: '',
             analysisStatus: ['In progress', 'Completed']
         },
@@ -197,8 +197,49 @@ export default function useSampleStore() {
             title: 'Odour',
             status: '',
             analysisStatus: ['In progress', 'Completed']
-        }
-
+        },
+        {
+            id: 33,
+             title: 'Nitrite',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+        {
+            id: 34,
+             title: 'Phenol',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            id: 35,
+             title: 'pH',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            id: 36,
+             title: 'Phosphate',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            id: 37,
+             title: 'Moisture-content',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            id: 38,
+             title: 'TOM',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            id: 39,
+             title: 'TOC',
+             status: '',
+             analysisStatus: ['In progress', 'Completed']
+         },
     ]
     }),
     actions: {

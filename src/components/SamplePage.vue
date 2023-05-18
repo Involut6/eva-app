@@ -48,7 +48,7 @@ export default defineComponent({
                 </div>
                 <div class="relative min-w-[500px] overflow-auto">
                     <table class="w-full bg-gray-100">
-                    <thead class="text-white bg-[#009efb] h-[8vh]">
+                    <thead class="text-white bg-[#0000fe] h-[8vh]">
                         <th>Title</th>
                         <th>Id</th>
                         <th>Date created</th>
@@ -63,6 +63,7 @@ export default defineComponent({
                             <td>{{ row.status }}</td>
                             <td>
                                 <div class="flex space-x-2 items-center justify-center">
+
                                     <div @click="isEditModal = true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="text-[#009efb] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
                                     </div>
@@ -90,7 +91,7 @@ export default defineComponent({
             <p class="w-full">Are you sure you want to delete this sample?</p>
             <div class="flex space-x-3 mt-8 w-fit ml-auto mr-0">
                 <button class="bg-red-600 text-white px-3 py-2 rounded-lg font-medium">Delete</button>
-                <button class="bg-[#009EFB] text-white px-3 py-2 rounded-lg font-medium" @click="isDeleteModal = false">Cancel</button>
+                <button class="bg-[#0000fe] text-white px-3 py-2 rounded-lg font-medium" @click="isDeleteModal = false">Cancel</button>
             </div>
         </div>
     </div>
