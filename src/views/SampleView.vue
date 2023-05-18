@@ -18,15 +18,15 @@ export default defineComponent({
           <div class="w-full h-full bg-black opacity-60 absolute">
             <img src="../assets/Kinetic-Labs-access-to-lab-space-and-facilities.jpg" alt="" class="w-full h-full">
           </div>
-          <div class="absolute z-10 bottom-[5%] text-center">
-            <h1 class="font-semibold text-2xl text-white">EnvAccord</h1>
+          <div class="absolute z-10 bottom-[8%] text-center">
+            <h1 class="font-semibold text-[30px] font-[700] text-white">Welcome to EnvAccord</h1>
             <p class="font-semibold text-2xl text-white">We are a leading provider of specialised environmental and sustainability risk management advisory services in Africa.</p></div> 
         </div>
 
         <div class="bg-[white] h-[520px] w-[500px] rounded-e-[15px] pt-[50px] px-[100px] text-center">
          <div class="border border-black border-1 w-fit mx-auto rounded-full p-[7px] bg-gray-100 mb-[10px]"> <img src="../assets/download-removebg-preview.png" alt="" class="w-[80px] "></div>
          <div class="">
-         <p class="text-lg font-semibold py-3">Enter Sample ID</p>
+         <p class="text-xl font-semibold py-3">Enter Sample ID</p>
          <p class="text-sm">Enter the sample Id to check the status and result of your sample</p>
          <label class="flex justify-start mt-[20px]">Sample ID</label>
          <input placeholder="Enter sample Id" class="block focus:outline-none w-full px-5 py-1 border mt-2 mb-4 rounded-lg" v-model="id" />
