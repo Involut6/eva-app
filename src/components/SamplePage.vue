@@ -12,21 +12,29 @@ export default defineComponent({
                {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
             ],
             isDeleteModal: false,
-            isEditModal: false
+            isEditModal: false,
+            totalSample: 207,
+            samples: [
+                {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA', id: 0},
+                {name: 'Linda Barett', gender: 'Female', location: 'Oyo State, Ifeyin Road', id: 1},
+                {name: 'Sanni Hammed', gender: 'Male', location: 'Lagos State, Bariga LCDA', id: 2},
+                {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA' , id: 3},
+                {name: 'Linda Barett', gender: 'Male', location: 'Oyo State, Ifeyin Road', id: 1},
+                {name: 'Sanni Hammed', gender: 'Female', location: 'Lagos State, Bariga LCDA', id: 2},
+                {name: 'Micheal Sullivan', gender: 'Female', location: 'Lagos State, Ikeja LCDA' , id: 3}
+            ],
         }
     }
 })
 
 </script>
 
-<template>
+<!-- <template>
 
     <div class="container mx-auto h-min-screen w-full">
 
-        <div> <!--svg icon--></div>
-
         <img src="" alt="">
-       <!-- section -->
+       section
         <div class="space-y-3 w-full h-fit px-[30px] py-[50px] max-[800px]:px-[0]">
         <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
             <div class="space-y-5">
@@ -34,18 +42,8 @@ export default defineComponent({
                     <p class="text-lg font-semibold">Sample List</p>
                 </div>
                 <div class="flex justify-end px-[20px] max-[375px]:flex-col items-center gap-3">
-                    <!-- <div class="flex gap-2 items-center">
-                      <p>Show</p>
-                      <select class="border border-black">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                      </select>
-
-                    </div> -->
                     <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Search....">
-                </div>
+                </div>  
                 <div class="relative min-w-[500px] overflow-auto">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#0000fe] h-[8vh]">
@@ -81,7 +79,7 @@ export default defineComponent({
         </div>
         </div>
 
-        <!-- when the delete button is clicked -->
+        when the delete button is clicked
 
     </div>
     <Teleport to="body">
@@ -97,7 +95,7 @@ export default defineComponent({
     </div>
     </Teleport>
 
-    <!-- editing  sample -->
+    editing  sample
     <Teleport to="body">
     <div @click.self="isEditModal = false" v-if="isEditModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
         <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
@@ -131,8 +129,68 @@ export default defineComponent({
     </Teleport> 
 
 
+</template> -->
+
+
+<template>
+    <div class="container mx-auto h-min-screen w-full">
+        <div class="w-full h-fit px-[30px] py-[50px] max-[800px]:px-[0]">
+            <div class="flex items-center gap-1 mb-6">
+                <span><svg xmlns="http://www.w3.org/2000/svg" class="mb-[-4px]" width="20" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21V9l8-6l8 6v12h-6v-7h-4v7H4Z"/></svg></span>
+                <p>Home /</p>
+                <p>Sample List</p>
+            </div>
+            <div class="flex gap-4 text-white gap-12 mb-10">
+                <div class="p-4 rounded-md bg-gradient-to-r from-[#0000fe] to-[#d0edfe] w-[280px] h-[120px] relative">
+                    <div class="flex flex-col justify-between h-full"> 
+                        <p class="text-lg font-semibold">CLIENTS</p>
+                        <p class="text-2xl">{{ totalSample }}</p>
+                    </div>
+                    <div>
+                        <p class="bg-[#99ff00] w-fit p-6 h-full rounded-l-[100%] rounded-r-[20%] absolute right-0 top-0"><svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 24 24"><path fill="currentColor" d="M5.85 17.1q1.275-.975 2.85-1.538T12 15q1.725 0 3.3.563t2.85 1.537q.875-1.025 1.363-2.325T20 12q0-3.325-2.337-5.663T12 4Q8.675 4 6.337 6.337T4 12q0 1.475.488 2.775T5.85 17.1ZM12 13q-1.475 0-2.488-1.012T8.5 9.5q0-1.475 1.012-2.488T12 6q1.475 0 2.488 1.012T15.5 9.5q0 1.475-1.012 2.488T12 13Zm0 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"/></svg></p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-md bg-gradient-to-r from-[#0000fe] to-[#d0edfe] w-[280px] h-[120px] relative">
+                    <div class="flex flex-col justify-between h-full"> 
+                        <p class="text-lg font-semibold"> SAMPLES</p>
+                        <p class="text-2xl">{{ totalSample }}</p>
+                    </div>
+                    <div>
+                        <p class="bg-[#99ff00] w-fit p-6 h-full rounded-l-[100%] rounded-r-[20%] absolute right-0 top-0"><svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 256 256"><path fill="currentColor" d="M222 67.34a33.81 33.81 0 0 0-10.64-24.25c-13.24-12.53-34.68-12.09-47.82 1.09L142.82 65l-.63-.63a22 22 0 0 0-31.11 0l-9 9a14 14 0 0 0 0 19.81l3.47 3.47l-52.41 52.45a37.81 37.81 0 0 0-9.84 36.73l-8.31 19a11.68 11.68 0 0 0 2.46 13a13.91 13.91 0 0 0 9.87 4.17a14.15 14.15 0 0 0 5.68-1.18l18-7.9a37.92 37.92 0 0 0 35.84-10.07l52.44-52.46l3.47 3.48a14 14 0 0 0 19.8 0l9-9a22.06 22.06 0 0 0 0-31.13l-.66-.65L212 91.85a33.76 33.76 0 0 0 10-24.51Zm-123.61 127a26 26 0 0 1-26 6.47a6 6 0 0 0-4.17.24l-20 8.75a2 2 0 0 1-2.09-.31l9.12-20.9a5.94 5.94 0 0 0 .19-4.31A25.91 25.91 0 0 1 56 166h70.78ZM138.78 154H65.24l48.83-48.84l36.76 36.78Zm64.77-70.59l-25.38 25.49a6 6 0 0 0 0 8.47l4.88 4.89a10 10 0 0 1 0 14.15l-9 9a2 2 0 0 1-2.82 0l-60.69-60.7a2 2 0 0 1 0-2.83l9-9a10 10 0 0 1 14.14 0l4.89 4.89a6 6 0 0 0 4.24 1.75a6 6 0 0 0 4.25-1.77L172 52.66c8.57-8.58 22.51-9 31.07-.85a22 22 0 0 1 .44 31.57Z"/></svg></p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-md bg-gradient-to-r from-[#0000fe] to-[#d0edfe] w-[280px] h-[120px] relative">
+                    <div class="flex flex-col justify-between h-full"> 
+                        <p class="text-lg font-semibold">USER</p>
+                        <p class="text-2xl">{{ totalSample }}</p>
+                    </div>
+                    <div>
+                        <p class="bg-[#99ff00] w-fit p-6 h-full rounded-l-[100%] rounded-r-[20%] absolute right-0 top-0"><svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 24 24"><path fill="currentColor" d="M16 14q-1.25 0-2.125-.875T13 11q0-1.25.875-2.125T16 8q1.25 0 2.125.875T19 11q0 1.25-.875 2.125T16 14Zm-6 6v-1.9q0-.525.25-1t.7-.75q1.125-.675 2.388-1.012T16 15q1.4 0 2.663.338t2.387 1.012q.45.275.7.75t.25 1V20H10Zm-7-6v-2h8v2H3Zm0-8V4h12v2H3Zm8.1 4H3V8h9q-.35.425-.563.925T11.1 10Z"/></svg></p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-6">
+                <div v-for="i in samples" :key="i.id">
+                <div class="flex bg-white w-fit justify-between p-4 pb-8 gap-6 rounded-md shadow-md relative">
+                    <div class="flex items-center gap-2">
+                        <div class="text-[#0000fe]"><svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24"><path fill="currentColor" d="M5.85 17.1q1.275-.975 2.85-1.538T12 15q1.725 0 3.3.563t2.85 1.537q.875-1.025 1.363-2.325T20 12q0-3.325-2.337-5.663T12 4Q8.675 4 6.337 6.337T4 12q0 1.475.488 2.775T5.85 17.1ZM12 13q-1.475 0-2.488-1.012T8.5 9.5q0-1.475 1.012-2.488T12 6q1.475 0 2.488 1.012T15.5 9.5q0 1.475-1.012 2.488T12 13Zm0 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"/></svg></div>
+                     <div>
+                        <p>{{ i.name }}</p>
+                        <p class="mb-2 text-gray-600">{{ i.gender }}</p>
+                        <p class="flex items-center"><span><svg xmlns="http://www.w3.org/2000/svg" class="text-gray-700" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12q.825 0 1.413-.588T14 10q0-.825-.588-1.413T12 8q-.825 0-1.413.588T10 10q0 .825.588 1.413T12 12Zm0 9.625q-.2 0-.4-.075t-.35-.2Q7.6 18.125 5.8 15.362T4 10.2q0-3.75 2.413-5.975T12 2q3.175 0 5.588 2.225T20 10.2q0 2.4-1.8 5.163t-5.45 5.987q-.15.125-.35.2t-.4.075Z"/></svg></span><span>{{ i.location }}</span></p>
+                     </div>
+                    </div>
+                    <div>
+                        <svg fill="currentColor" class="rotate-90" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="36px" height="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <path d="M256,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S273.7,224,256,224L256,224z"/> <path d="M128.4,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S146,224,128.4,224L128.4,224z"/> <path d="M384,224c-17.7,0-32,14.3-32,32s14.3,32,32,32s32-14.3,32-32S401.7,224,384,224L384,224z"/> </g> </svg>
+                    </div>
+                    <div class="bg-white shadow-xl border-2 w-[165px] absolute py-3 z-20 rounded-md right-[1.2rem] top-[3rem]">
+                        <div class="hover:bg-gray-200 cursor-pointer mb-2"><p class="p-2">View Details</p></div>
+                        <div class="hover:bg-gray-200 cursor-pointer mb-2"><p class="p-2">Edit</p></div>
+                        <div class="hover:bg-gray-200 cursor-pointer "><p class="p-2">Delete</p></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </template>
-
-<style scoped>
-
-</style>
