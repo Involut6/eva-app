@@ -12,14 +12,13 @@
          <div class="h-fit mt-5">  
         <div class="mb-4">
           <p class="text-gray-800 flex justity-start">Email</p>
-          <input type="Email" class="outline-none h-[30px] bg-[whitesmoke] rounded-[5px] border border-gray-300 px-[10px] py-3 w-full" placeholder="Enter your Email">
+         <input placeholder="Enter your email" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" />
         </div>
         
         <div class="mb-4">
           <p class="text-gray-800 flex justity-start">Password</p>
-          <div class="flex border border-gray-300 px-[10px] justify-between py-3 rounded-[5px] items-center h-[30px] bg-[whitesmoke]">
-            <input type="Password" class="outline-none bg-[whitesmoke]" placeholder="Enter your Password">
-          
+          <div class="flex border mt-2 justify-between rounded-[5px] px-3 py-2 items-center">
+            <input placeholder="Enter your password" class="block focus:outline-none w-full rounded-lg" />        
             <div class="flex" id="eye-icons">
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256">
@@ -36,7 +35,6 @@
           </div>
         </div>
         <router-link class="" to="/"><button type="submit" class="bg-[#0000ff] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">Sign in</button></router-link>
-        <p class="text-center text-sm text-gray-500 pt-[20px]">Forgot Password? <span class="text-[#009efb] cursor-pointer">Recover here</span></p>
       </div>
         </div>
       </div>

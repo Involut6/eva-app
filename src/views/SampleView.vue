@@ -29,7 +29,7 @@ export default defineComponent({
          <p class="text-xl font-semibold py-3">Enter Sample ID</p>
          <p class="text-sm">Enter the sample Id to check the status and result of your sample</p>
          <label class="flex justify-start mt-[20px]">Sample ID</label>
-         <input placeholder="Enter sample Id" class="block focus:outline-none w-full px-5 py-1 border mt-2 mb-4 rounded-lg" v-model="id" />
+         <input placeholder="Enter sample Id" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" v-model="id" />
          <button @click="() => showSample = true" :class="id === '' ? 'bg-[#0000fe]' : 'bg-gray-300'" class="font-medium text-white p-2 rounded-lg mt-4 w-full text-center">View Sample</button>
         </div>
         </div>
