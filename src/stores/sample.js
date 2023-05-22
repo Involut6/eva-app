@@ -209,7 +209,98 @@ export default function useSampleStore() {
 
          },
     ],
-    clientList: []
+    clientList: [
+        {
+            clientId : "1",
+            clientName : "Abdullah",
+            dateReceived : "02/08/2020",
+            samples: [
+                {
+                    sampleType : "Soil Sample",
+                    sampleStatus : "Received",
+                    dateReceived : "02/08/2020",
+                    listOfAnalysis: [
+                        {
+                            name : "pH",
+                            status : "in progress",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            clientId : "2",
+            clientName : "Fawaz",
+            dateReceived : "02/08/2011",
+            samples: [
+                {
+                    sampleType : "Water Sample",
+                    sampleStatus : "Received",
+                    dateReceived : "02/08/2020",
+                    listOfAnalysis: [
+                        {
+                            name : "temperature",
+                            status : "completed",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            clientId : "3",
+            clientName : "Abdulqayum",
+            dateReceived : "02/08/2020",
+            samples: [
+                {
+                    sampleType : "Water Sample",
+                    sampleStatus : "Received",
+                    dateReceived : "02/08/2020",
+                    listOfAnalysis: [
+                        {
+                            name : "apperance",
+                            status : "in progress",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            clientId : "4",
+            clientName : "Abdul-azeez",
+            dateReceived : "02/08/2020",
+            samples: [
+                {
+                    sampleType : "Soil Sample",
+                    sampleStatus : "Received",
+                    dateReceived : "02/08/2020",
+                    listOfAnalysis: [
+                        {
+                            name : "Nitrite",
+                            status : "in progress",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            clientId : "5",
+            clientName : "Ebube",
+            dateReceived : "02/08/2020",
+            samples: [
+                {
+                    sampleType : "Water Sample",
+                    sampleStatus : "Received",
+                    dateReceived : "02/08/2020",
+                    listOfAnalysis: [
+                        {
+                            name : "phosphate",
+                            status : "completed",
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 
     }),
     actions: {
