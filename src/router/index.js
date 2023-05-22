@@ -12,12 +12,17 @@ const router = createRouter({
         {
           path: '/',
           name: 'Samples',
-          component: import('../components/SamplePage.vue')
+          component: import('../components/ClientListPage.vue')
         },
         {
           path: '/add-sample',
           name: 'Add-sample',
           component: import('../components/AddSampleForm.vue')
+        },
+        {
+          path: '/client',
+          name: 'Client-Details',
+          component: import('../components/ClientPage.vue')
         }
       ]
     },
