@@ -31,7 +31,18 @@ export default defineComponent({
                {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},]},
                 {name: 'Micheal Sullivan', gender: 'Female', location: 'Lagos State, Ikeja LCDA' , id: 6, samples:[]}
             ],
-            drop: null
+            drop: null,
+            table: [
+                {number: 1, name: "Balkis", id: "h557yi", sampleNumber: "2", dateCreated: "Aug 29 2022" },
+                {number: 2, name: "Agba", id: "erfrti", sampleNumber: "5", dateCreated: "Sep 23 2023" },
+                {number: 3, name: "Abdulhameed", id: "njksd5", sampleNumber: "1", dateCreated: "Aug 2 2021" },
+                {number: 4, name: "Esther", id: "8nfocd", sampleNumber: "0", dateCreated: "Jan 29 2012" },
+                {number: 5, name: "Emma", id: "we34rd", sampleNumber: "30", dateCreated: "May 9 2022" },
+                {number: 6, name: "Fawas", id: "cdf4tg", sampleNumber: "25", dateCreated: "Jul 4 2023" },
+                {number: 7, name: "Maruf", id: "43rfda", sampleNumber: "2", dateCreated: "Dec 29 2023" },
+                {number: 8, name: "Taye", id: "vf45gf", sampleNumber: "2", dateCreated: "Aug 20 2023" },
+                {number: 9, name: "Ibrahim", id: "sdfrg4", sampleNumber: "2", dateCreated: "Aug 9 2022" },
+            ]
         }
     },
     methods: {
@@ -179,7 +190,7 @@ export default defineComponent({
                 </div>
             </div>
             <p class="md:my-4 mb-4 text-lg font-semibold">Client List</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6">
+            <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6">
                 <div v-for="i in samples" :key="i.id">
                 <div class="flex bg-white w-full justify-between p-4 gap-6 rounded-md shadow-md relative">
                     <div>
@@ -197,7 +208,37 @@ export default defineComponent({
                     </div>
                 </div>
             </div>
-            </div>
+            </div> -->
+
+            <table class="w-full bg-gray-100">
+                <thead class="bg-[#0000fe] text-white h-[8vh]">
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>Id</th>
+                    <th>Number of sample</th>
+                    <th>Date created</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    <tr class="text-center h-[10vh] text-[17px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
+                        <td>{{ rows.number }}</td>
+                        <td>{{ rows.name }}</td>
+                        <td>{{ rows.id }}</td>
+                        <td>{{ rows.sampleNumber }}</td>
+                        <td>{{ rows.dateCreated }}</td>
+                        <td>
+                            <div class="flex justify-center items-center space-x-4">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>
     </div>
