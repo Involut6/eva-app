@@ -60,7 +60,6 @@ const sample = ref(1)
                             <option>Result ready to download</option>
                         </select>
                     </div>
-                    {{ newSample }}
                     <section class="relative">
                         <h1 class="text-lg font-[400]">List of Analysis</h1>
                         <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">

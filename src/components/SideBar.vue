@@ -12,13 +12,13 @@ export default defineComponent({
 
 <template>
     <div>
-        <div class="bg-[#0000fe] hidden lg:block py-8 h-screen overflow-hidden">
-            <div class="flex flex-col items-center mb-10">
+        <div class="bg-[#0000fe] hidden lg:block py-12 h-screen overflow-hidden">
+            <!-- <div class="flex flex-col items-center mb-10">
                 <div class="w-fit mb-[9px] rounded-[50%] p-[6px] border-[5px] border-b-[#99ff00] border-b-l-[#99ff00] border-t-[#0000fe] border-l-[#0000fe] border-r-[#99ff00]">
                     <div class="bg-black w-[80px] h-[80px] rounded-[50%]"></div>
                 </div>
                 <p class="text-white text-md">Admin</p>
-            </div> 
+            </div>  -->
             <div class="flex flex-col gap-2 text-lg">
                 <router-link to="/" :class="$route.path === '/' ? 'bg-white text-[#0000fe]' : 'text-white'" class="flex gap-4 items-center cursor-pointer hover:bg-white hover:text-[#0000fe] px-[1.4rem] py-2">
                     <div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21V9l8-6l8 6v12h-6v-7h-4v7H4Z"/></svg></div>
