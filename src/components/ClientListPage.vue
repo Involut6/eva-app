@@ -78,7 +78,7 @@ export default defineComponent({
                 </div>
                 <div class="p-4 rounded-md bg-gradient-to-r from-[#0000fe] to-[#d0edfe] w-full h-[120px] relative">
                     <div class="flex flex-col justify-between h-full"> 
-                        <p class="text-lg font-semibold">Analysis</p>
+                        <p class="text-lg font-semibold">ANALYSIS</p>
                         <p class="text-2xl">{{ store.$state.analysis.length }}</p>
                     </div>
                     <div>
