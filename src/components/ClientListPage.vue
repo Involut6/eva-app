@@ -9,35 +9,24 @@ export default defineComponent({
             isDeleteModal: false,
             isEditModal: false,
             totalSample: 207,
-            samples: [
-                {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA', id: 0, samples: [{id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},]},
-                {name: 'Linda Barett', gender: 'Female', location: 'Oyo State, Ifeyin Road', id: 1, samples: [{id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}],}, 
-                {name: 'Sanni Hammed', gender: 'Male', location: 'Lagos State, Bariga LCDA', id: 2, samples: []},
-                {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA' , id: 3, samples: [
-               {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}  
-                ]},
-                {name: 'Linda Barett', gender: 'Male', location: 'Oyo State, Ifeyin Road', id: 4, samples: []},
-                {name: 'Sanni Hammed', gender: 'Female', location: 'Lagos State, Bariga LCDA', id: 5, samples:[ {title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},]},
-                {name: 'Micheal Sullivan', gender: 'Female', location: 'Lagos State, Ikeja LCDA' , id: 6, samples:[]}
-            ],
+            // clients: [
+            //     {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA', id: 0, samples: [{id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},]},
+            //     {name: 'Linda Barett', gender: 'Female', location: 'Oyo State, Ifeyin Road', id: 1, samples: [{id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}],}, 
+            //     {name: 'Sanni Hammed', gender: 'Male', location: 'Lagos State, Bariga LCDA', id: 2, samples: []},
+            //     {name: 'Micheal Sullivan', gender: 'Male', location: 'Lagos State, Ikeja LCDA' , id: 3, samples: [
+            //    {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}  
+            //     ]},
+            //     {name: 'Linda Barett', gender: 'Male', location: 'Oyo State, Ifeyin Road', id: 4, samples: []},
+            //     {name: 'Sanni Hammed', gender: 'Female', location: 'Lagos State, Bariga LCDA', id: 5, samples:[ {title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
+            //    {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},]},
+            //     {name: 'Micheal Sullivan', gender: 'Female', location: 'Lagos State, Ikeja LCDA' , id: 6, samples:[]}
+            // ],
             drop: null,
-            table: [
-                {number: 1, name: "Balkis", id: "h557yi", sampleNumber: "2", dateCreated: "Aug 29 2022" },
-                {number: 2, name: "Agba", id: "erfrti", sampleNumber: "5", dateCreated: "Sep 23 2023" },
-                {number: 3, name: "Abdulhameed", id: "njksd5", sampleNumber: "1", dateCreated: "Aug 2 2021" },
-                {number: 4, name: "Esther", id: "8nfocd", sampleNumber: "0", dateCreated: "Jan 29 2012" },
-                {number: 5, name: "Emma", id: "we34rd", sampleNumber: "30", dateCreated: "May 9 2022" },
-                {number: 6, name: "Fawas", id: "cdf4tg", sampleNumber: "25", dateCreated: "Jul 4 2023" },
-                {number: 7, name: "Maruf", id: "43rfda", sampleNumber: "2", dateCreated: "Dec 29 2023" },
-                {number: 8, name: "Taye", id: "vf45gf", sampleNumber: "2", dateCreated: "Aug 20 2023" },
-                {number: 9, name: "Ibrahim", id: "sdfrg4", sampleNumber: "2", dateCreated: "Aug 9 2022" },
-            ],
             store: useSampleStore(),
         }
     },
@@ -109,20 +98,20 @@ export default defineComponent({
 
             <table class="w-full bg-gray-100">
                 <thead class="bg-[#0000fe] text-white h-[8vh]">
-                    <th>S/N</th>
-                    <th>Name</th>
-                    <th>Id</th>
-                    <th>Number of sample</th>
-                    <th>Date created</th>
-                    <th>Action</th>
+                    <th class="w-[10%]">S/N</th>
+                    <th class="w-[30%]">Name</th>
+                    <th class="w-[10%]">Id</th>
+                    <th class="w-[15%]">Number of samples</th>
+                    <th class="w-[15%]">Date created</th>
+                    <th class="w-[10%]">Actions</th>
                 </thead>
                 <tbody>
-                    <tr class="text-center h-[10vh] text-[17px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
-                        <td>{{ rows.number }}</td>
-                        <td>{{ rows.name }}</td>
-                        <td>{{ rows.id }}</td>
-                        <td>{{ rows.sampleNumber }}</td>
-                        <td>{{ rows.dateCreated }}</td>
+                    <tr @click="viewClient(rows)" class="cursor-pointer text-center h-[7vh] text-[17px] border border-gray-300" v-for="(rows, index) in store.$state.clientList" :key="rows.id" :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'">
+                        <td>{{ index+1 }}</td>
+                        <td>{{ rows.clientName }}</td>
+                        <td>{{ rows.clientId }}</td>
+                        <td>{{ rows.samples.length }}</td>
+                        <td>{{ rows.dateReceived }}</td>
                         <td>
                             <div class="flex justify-center items-center space-x-4">
                                 <div>

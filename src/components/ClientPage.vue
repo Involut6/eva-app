@@ -14,12 +14,17 @@ export default defineComponent({
             isEditModal: false,
             details: {},
             drop: false,
-            analysis: useSampleStore().$state.analysis
+            analysis: useSampleStore().$state.analysis,
+            singleSample: {}
         }
     },
     methods: {
         dropDown(id) {
             this.drop = id
+        },
+        getSingleSample(sample) {
+            this.isEditModal = true
+            this.singleSample = sample
         }
     }
 })
@@ -56,18 +61,20 @@ export default defineComponent({
                         <th>Id</th>
                         <th>Date created</th>
                         <th>Status</th>
+                        <th>Analysis</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr class="text-center h-[10vh] border border-gray-300" :class="details.samples.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in details.samples" :key="row.id">
+                        <tr class="text-center h-[7vh] border border-gray-300" :class="details.samples.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in details.samples" :key="row.id">
                             <td>{{ row.sampleType }}</td>
                             <td>{{ details.samples.indexOf(row) + 1 }}</td>
                             <td>{{ row.dateReceived }}</td>
                             <td>{{ row.sampleStatus }}</td>
+                            <td>{{ row.listOfAnalysis.length }}</td>
                             <td>
                                 <div class="flex space-x-4 items-center justify-center">
 
-                                    <div @click="isEditModal = true">
+                                    <div @click="getSingleSample(row)">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
                                     </div>
                                     <div @click="isDeleteModal = true">
@@ -107,11 +114,11 @@ export default defineComponent({
                 <div class="flex space-x-4 items-center">
                     <div class="space-y-1">
                         <p>Sample name</p>
-                        <input type="text" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                        <input type="text" v-model="singleSample.sampleType" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
                     <div class="py-[10px]">
                         <h1>Sample status</h1>
-                        <select class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                        <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
                             <option disabled value="">Status</option>
                             <option>Received</option>
                             <option>Preparation</option>
@@ -120,9 +127,20 @@ export default defineComponent({
                         </select>
                     </div>
                 </div>
-                <div class="relative">
-                    <h1 class="text-lg font-[400]">List of Analysis</h1>
-                    <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
+                <div>
+                    <p>List of Analysis</p>
+                    <div v-for="item in singleSample.listOfAnalysis" :key="item" class="flex mt-2 space-x-8 items-center">
+                        <p class="">{{ item.name }}</p>
+                        <div class="flex items-center space-x-2 px-2 py-[6px] rounded-full bg-[#99ff00] text-[#0000fe]">
+                            <p class="text-sm font-medium">{{ item.status }}</p>
+                            <svg v-if="item.status === 'In progress'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63M12.5 7v5.25l4.5 2.67l-.75 1.23L11 13V7h1.5Z"/></svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M15.5 8.5l-4.88 4.88l-2.12-2.12l-1.06 1.06l3.18 3.18l5.94-5.94L15.5 8.5M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63Z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative mt-4">
+                    <h1 class="">Add Analysis</h1>
+                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
                         <p class="">Analysis</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                     </div>
@@ -132,10 +150,10 @@ export default defineComponent({
                                 <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
                                 <label :for="item.title" class="w-fit">{{item.title}}</label>
                             </div>
-                            <select class="focus:outline-none" v-model="item.status">
+                            <!-- <select class="focus:outline-none" v-model="item.status">
                                 <option value="" disabled>Status</option>
                                 <option v-for="option in item.analysisStatus" :value="option">{{ option }}</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                 </div>

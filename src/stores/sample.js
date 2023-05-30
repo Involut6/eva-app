@@ -279,8 +279,8 @@ export default function useSampleStore() {
                     dateReceived : "02/08/2020",
                     listOfAnalysis: [
                         {
-                            name : "temperature",
-                            status : "ompleted",
+                            name : "Temperature",
+                            status : "Completed",
                         }
                     ]
                 },
@@ -308,7 +308,7 @@ export default function useSampleStore() {
                     dateReceived : "02/08/2020",
                     listOfAnalysis: [
                         {
-                            name : "apperance",
+                            name : "Appearance",
                             status : "In progress",
                         }
                     ]
