@@ -38,7 +38,7 @@ export default defineComponent({
 
     <!-- Modal -->
     <div @click.self="showSample = false"  v-if="showSample" class="h-screen w-screen fixed top-0 left-0 flex justify-center items-center bg-opacity-60 bg-black">
-        <div class="p-5 rounded-lg bg-white w-[550px]">
+        <!-- <div class="p-5 rounded-lg bg-white w-[550px]">
             <div class="w-full flex justify-between">
                 <div>
                     <p class="text-2xl font-semibold">Sample Information</p>
@@ -89,6 +89,9 @@ export default defineComponent({
                 <button class="px-3 py-2 rounded-lg bg-gray-300 text-white">Download Result</button>
             </div>
             </div>
+        </div> -->
+        <div class="p-5 rounded-lg bg-white w-[950px] relative z-20">
+           <div class="flex justify-end"><img src="../assets/svg-rev-01.png" alt="" class="h-[100px] "></div>  
         </div>
     </div>
 </template>

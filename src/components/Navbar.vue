@@ -3,8 +3,10 @@
 <template>
     <div class="sticky top-0 z-10 bg-white w-full py-3 flex items-center justify-between px-[30px]">
       <div class="flex space-x-3 items-center">
-        <img src="../assets/download-removebg-preview.png" class="h-[50px]" />
-        <h1 class="hidden md:block text-[#0000fe] text-center text-3xl font-semibold">Env<span class="text-[#99ff00]">Accord</span></h1>
+        <img class="h-[50px]" src="../assets/svg-rev-01.png" alt="">
+        <!-- <img src="../assets/download-removebg-preview.png" class="h-[50px]" />
+        <h1 class="hidden md:block text-[#0000fe] text-center text-3xl font-semibold">Env<span class="text-[#99ff00]">Accord</span></h1> -->
+
       </div>
       <div class="flex gap-8 items-center">
         <div class="flex gap-1">
