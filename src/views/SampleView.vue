@@ -91,7 +91,10 @@ export default defineComponent({
             </div>
         </div> -->
         <div class="p-5 rounded-lg bg-white w-[800px] relative z-80 h-[90vh] overflow-scroll">
-           <div class="flex justify-end"><img src="../assets/svg-rev-01.png" alt="" class="h-[90px] "></div> 
+           <div class="flex justify-between md:justify-end">
+            <svg class="md:hidden" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21l-9-9m0 0L3 3m9 9l9-9m-9 9l-9 9"/></svg>
+            <img src="../assets/svg-rev-01.png" alt="" class="h-[90px] ">
+        </div> 
           <div class="px-[60px]">
              <p class="text-xl font-bold py-3">Customer Satisfaction Survey</p>
              <table class="py-2 w-full my-2">
