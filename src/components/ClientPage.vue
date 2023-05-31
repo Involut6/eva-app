@@ -1,23 +1,30 @@
 <script>
 import { defineComponent } from 'vue';
+import useSampleStore from '../stores/sample';
 
 
 export default defineComponent({
+    mounted() {
+        this.details = useSampleStore().$state.client
+        console.log(this.details)
+    },
     data() {
         return {
-            tableRows: [
-               {id: 1, title: "Blood Sample", dateCreated: "Aug 29, 2000", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:2, title: "Urine Sample", dateCreated: "Apr 4, 2001", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id: 3, title: "Fieces Sample", dateCreated: "Feb 29, 2010", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]},
-               {id:4, title: "Soil Sample", dateCreated: "May 12, 2022", status: 'In progress', analysis: [{title: 'pH', status: 'in progress'}]}
-            ],
             isDeleteModal: false,
             isEditModal: false,
+            details: {},
+            drop: false,
+            analysis: useSampleStore().$state.analysis,
+            singleSample: {}
         }
     },
     methods: {
         dropDown(id) {
             this.drop = id
+        },
+        getSingleSample(sample) {
+            this.isEditModal = true
+            this.singleSample = sample
         }
     }
 })
@@ -26,7 +33,7 @@ export default defineComponent({
 
 <template>
 
-    <div class="container mx-auto h-min-screen w-full">
+    <div class="container mx-auto min-h-screen w-full">
 
         <div class="px-4 md:px-8 pt-4 md:pt-8 flex space-x-2 items-center">
             <router-link to="/" class="text-[#0000fe]">Home</router-link>
@@ -36,8 +43,8 @@ export default defineComponent({
         <div class="w-full h-fit md:px-[30px] px-4 pt-4 pb-[100px] lg:pb-4">
             <div class="bg-white md:px-[30px] px-4 py-5 space-y-4">
                 <div class="md:flex justify-between border-b py-4">
-                    <p class="text-lg font-semibold">Dervac global services</p>
-                    <p class="">Date created: 24/09/2022</p>
+                    <p class="text-lg font-semibold">{{ details.clientName }}</p>
+                    <p class="">Date created: {{ details.dateReceived }}</p>
                 </div>
                 <div class="flex justify-between max-[375px]:flex-col items-center gap-3">
                     <!-- <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Search...."> -->
@@ -47,25 +54,27 @@ export default defineComponent({
             </div>  
         <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
             <div class="space-y-5">
-                <div class="relative min-w-[700px] overflow-auto">
+                <div class="relative min-w-[700px]">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#0000fe] h-[8vh]">
                         <th>Title</th>
                         <th>Id</th>
                         <th>Date created</th>
                         <th>Status</th>
+                        <th>Analysis</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr class="text-center h-[10vh] border border-gray-300" :class="tableRows.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in tableRows" :key="row.id">
-                            <td>{{ row.title }}</td>
-                            <td>{{ row.id }}</td>
-                            <td>{{ row.dateCreated }}</td>
-                            <td>{{ row.status }}</td>
+                        <tr class="text-center h-[7vh] border border-gray-300" :class="details.samples.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in details.samples" :key="row.id">
+                            <td>{{ row.sampleType }}</td>
+                            <td>{{ details.samples.indexOf(row) + 1 }}</td>
+                            <td>{{ row.dateReceived }}</td>
+                            <td>{{ row.sampleStatus }}</td>
+                            <td>{{ row.listOfAnalysis.length }}</td>
                             <td>
                                 <div class="flex space-x-4 items-center justify-center">
 
-                                    <div @click="isEditModal = true">
+                                    <div @click="getSingleSample(row)">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
                                     </div>
                                     <div @click="isDeleteModal = true">
@@ -95,6 +104,7 @@ export default defineComponent({
         </div>
     </div>
     </Teleport>
+    <!-- Edit modal -->
     <Teleport to="body">
     <div @click.self="isEditModal = false" v-if="isEditModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
         <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
@@ -105,17 +115,43 @@ export default defineComponent({
                 <div class="flex space-x-4 items-center">
                     <div class="space-y-1">
                         <p>Sample name</p>
-                        <input type="text" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                        <input type="text" v-model="singleSample.sampleType" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
                     <div class="py-[10px]">
                         <h1>Sample status</h1>
-                        <select class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                        <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
                             <option disabled value="">Status</option>
                             <option>Received</option>
                             <option>Preparation</option>
                             <option>Analysis in progress</option>
                             <option>Analysis Completed</option>
                         </select>
+                    </div>
+                </div>
+                <div>
+                    <p>List of Analysis</p>
+                    <div v-for="item in singleSample.listOfAnalysis" :key="item" class="flex mt-2 space-x-8 items-center">
+                        <p class="">{{ item.name }}</p>
+                        <div class="flex items-center space-x-2 px-2 py-[6px] rounded-full bg-[#99ff00] text-[#0000fe]">
+                            <p class="text-sm font-medium">{{ item.status }}</p>
+                            <svg v-if="item.status === 'In progress'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63M12.5 7v5.25l4.5 2.67l-.75 1.23L11 13V7h1.5Z"/></svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M15.5 8.5l-4.88 4.88l-2.12-2.12l-1.06 1.06l3.18 3.18l5.94-5.94L15.5 8.5M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63Z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative mt-4">
+                    <h1 class="">Add Analysis</h1>
+                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
+                        <p class="">Analysis</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
+                    </div>
+                    <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
+                        <div v-for="item in analysis" class="flex w-full justify-between items-center">
+                            <div class="flex gap-[5px] justify-start item-center ">
+                                <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
+                                <label :for="item.title" class="w-fit">{{item.title}}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>

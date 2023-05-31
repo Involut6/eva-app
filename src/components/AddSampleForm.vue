@@ -47,7 +47,7 @@ const sample = ref(1)
                         <h1 class="text-lg font-[400]">Sample Type</h1>
                         <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" v-model="newSample.title" type="text">
                     </div>
-                    <div class="">
+                    <!-- <div class="">
                         <h1 class="text-lg font-[400]">Sample status</h1>
                         <select class="border w-full focus:outline-none border-solid border-gray-300 border-1 p-2 pr-2 rounded-[5px]" v-model="newSample.status">
                             <option disabled value="">Status</option>
@@ -59,24 +59,23 @@ const sample = ref(1)
                             <option>QA/QC in completed</option>
                             <option>Result ready to download</option>
                         </select>
-                    </div>
-                    {{ newSample }}
+                    </div> -->
                     <section class="relative">
                         <h1 class="text-lg font-[400]">List of Analysis</h1>
                         <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
                             <p class="">Analysis</p>
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                         </div>
-                        <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
+                        <div v-if="drop" class="absolute top-[80px] right-0 z-10 bg-white w-[300px] h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
                             <div v-for="item in analysis" class="flex w-full justify-between items-center">
                                 <div class="flex gap-[5px] justify-start item-center ">
                                     <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
                                     <label :for="item.title" class="w-fit">{{item.title}}</label>
                                 </div>
-                                <select class="focus:outline-none" v-model="item.status">
+                                <!-- <select class="focus:outline-none" v-model="item.status">
                                     <option value="" disabled>Status</option>
                                     <option v-for="option in item.analysisStatus" :value="option">{{ option }}</option>
-                                </select>
+                                </select> -->
                             </div>
                          </div>
                     </section>
