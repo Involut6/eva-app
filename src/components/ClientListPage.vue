@@ -159,7 +159,7 @@ export default defineComponent({
 
 <template>
     <div class="container mx-auto h-min-screen w-full pb-[100px] lg:pb-0">
-        <div class="w-full h-fit xl:p-[30px] max-[1300px]:p-4">
+        <div class="w-full h-fit xl:p-[30px] max-[1300px]:p-4  max-[741px]:p-0">
             <div class="hidden md:flex flex-col md:flex-row md:flex gap-4 text-white xl:gap-12 mb-10">
                 <div class="p-4 w-full rounded-md bg-gradient-to-r from-[#0000fe] to-[#d0edfe] h-[120px] relative">
                     <div class="flex flex-col justify-between h-full"> 
@@ -210,8 +210,10 @@ export default defineComponent({
             </div>
             </div> -->
 
-            <table class="w-full bg-gray-100">
-                <thead class="bg-[#0000fe] text-white h-[8vh]">
+            <div class="overflow-x-scroll w-full">
+                <div class="relative min-w-[700px]">
+                <table class="w-full bg-gray-100">
+                <thead class="bg-[#0000fe] text-white h-[8vh] px-[50px]">
                     <th>S/N</th>
                     <th>Name</th>
                     <th>Id</th>
@@ -239,6 +241,8 @@ export default defineComponent({
                     </tr>
                 </tbody>
             </table>
+                </div>
+            </div>
         </div>
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>
     </div>
