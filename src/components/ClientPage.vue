@@ -54,7 +54,7 @@ export default defineComponent({
             </div>  
         <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
             <div class="space-y-5">
-                <div class="relative min-w-[700px] overflow-auto">
+                <div class="relative min-w-[700px]">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#0000fe] h-[8vh]">
                         <th>Title</th>
@@ -104,6 +104,7 @@ export default defineComponent({
         </div>
     </div>
     </Teleport>
+    <!-- Edit modal -->
     <Teleport to="body">
     <div @click.self="isEditModal = false" v-if="isEditModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
         <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
@@ -150,10 +151,6 @@ export default defineComponent({
                                 <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
                                 <label :for="item.title" class="w-fit">{{item.title}}</label>
                             </div>
-                            <!-- <select class="focus:outline-none" v-model="item.status">
-                                <option value="" disabled>Status</option>
-                                <option v-for="option in item.analysisStatus" :value="option">{{ option }}</option>
-                            </select> -->
                         </div>
                     </div>
                 </div>

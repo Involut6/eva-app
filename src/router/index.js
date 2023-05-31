@@ -23,6 +23,11 @@ const router = createRouter({
           path: '/client',
           name: 'Client-Details',
           component: import('../components/ClientPage.vue')
+        },
+        {
+          path: '/feedback',
+          name: 'Feedback',
+          component: import('../components/Feedback.vue')
         }
       ]
     },

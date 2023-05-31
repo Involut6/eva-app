@@ -40,7 +40,7 @@ export default defineComponent({
                     <th>Action</th>
                 </thead>
                 <tbody>
-                    <tr class="text-center h-[10vh] text-[17px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
+                    <tr class="text-center h-[8vh] text-[17px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
                         <td>{{ rows.number }}</td>
                         <td>{{ rows.name }}</td>
                         <td>{{ rows.id }}</td>
