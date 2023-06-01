@@ -36,7 +36,7 @@ export default defineComponent({
         },
         viewClient(prod) {
             this.store.$state.client = prod
-            this.$router.push('/client')
+            this.$router.push('/client-details')
         }
     }
 })

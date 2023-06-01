@@ -345,7 +345,7 @@ export default function useSampleStore() {
                     listOfAnalysis: [
                         {
                             name : "phosphate",
-                            status : "ompleted",
+                            status : "Completed",
                         }
                     ]
                 },
@@ -357,6 +357,10 @@ export default function useSampleStore() {
                         {
                             name : "pH",
                             status : "In progress",
+                        },
+                        {
+                            name : "phosphate",
+                            status : "Completed",
                         }
                     ]
                 }

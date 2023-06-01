@@ -20,7 +20,7 @@ const router = createRouter({
           component: import('../components/AddSampleForm.vue')
         },
         {
-          path: '/client',
+          path: '/client-details',
           name: 'Client-Details',
           component: import('../components/ClientPage.vue')
         },
@@ -37,10 +37,15 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/sample',
-      name: 'Sample-page',
+      path: '/client',
+      name: 'Client-page',
       component: () => import('../views/SampleView.vue')
     },
+    {
+      path: '/client/samples',
+      name: 'View-Samples',
+      component: () => import('../components/SampleInfo.vue')
+    }
   ]
 })
 
