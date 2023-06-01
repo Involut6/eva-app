@@ -47,7 +47,6 @@ export default defineComponent({
                     <p class="">Date created: {{ details.dateReceived }}</p>
                 </div>
                 <div class="flex justify-between max-[375px]:flex-col items-center gap-3">
-                    <!-- <input type="text" class="border border-gray-300 rounded-[20px] px-5 py-1 outline-none" placeholder="Search...."> -->
                     <p class="font-semibold">Sample list</p>
                     <button @click="isEditModal = true" class="bg-black text-white px-4 py-[10px] font-[600] rounded-lg">Add Sample</button>
                 </div>
@@ -91,7 +90,8 @@ export default defineComponent({
         </div>
         </div>
 
-    </div>
+    </div> 
+
     <Teleport to="body">
         <div @click.self="isDeleteModal = false" v-if="isDeleteModal" class="fixed top-0 left-0 h-screen w-screen z-20 flex justify-center items-center bg-opacity-75 bg-black">
         <div class="z-30 bg-white w-[343px] lg:w-[450px] h-fit rounded-lg shadow-lg p-5">

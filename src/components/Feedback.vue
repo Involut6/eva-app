@@ -8,7 +8,7 @@ export default defineComponent({
             table: [
                 {number: 1, name: "Balkis", id: "h557yi", sampleStatus: "READ", dateCreated: "Aug 29 2022" },
                 {number: 2, name: "Agba", id: "erfrti", sampleStatus: "UNREAD", dateCreated: "Sep 23 2023" },
-                {number: 3, name: "Abdulhameed", id: "njksd5", sampleStatus: "1", dateCreated: "Aug 2 2021" },
+                {number: 3, name: "Abdulhameed", id: "njksd5", sampleStatus: "READ", dateCreated: "Aug 2 2021" },
                 {number: 4, name: "Esther", id: "8nfocd", sampleStatus: "READ", dateCreated: "Jan 29 2012" },
                 {number: 5, name: "Emma", id: "we34rd", sampleStatus: "UNREAD", dateCreated: "May 9 2022" },
                 {number: 6, name: "Fawas", id: "cdf4tg", sampleStatus: "READ", dateCreated: "Jul 4 2023" },
@@ -24,7 +24,7 @@ export default defineComponent({
 <template>
     <div class="container mx-auto min-h-screen w-full pb-[100px] lg:pb-0">
         <div class="w-full h-fit xl:p-[30px] max-[1300px]:p-4">
-            <div class="flex space-x-2 items-center">
+            <div class="flex space-x-2 items-center mb-6">
                 <router-link to="/"><p class="text-[#0000fe]">Home</p></router-link>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6l-6-6z"/></svg>
                 <p>Feedback</p>
@@ -42,7 +42,7 @@ export default defineComponent({
                     <th>Action</th>
                 </thead>
                 <tbody>
-                    <tr class="text-center h-[8vh] text-[17px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
+                    <tr class="text-center h-[8vh] text-[16px] border border-gray-300" v-for="rows in table" :key="rows.id" :class=" table.indexOf(rows) % 2 === 0 ? 'bg-gray-200' : 'bg-gray-white'">
                         <td>{{ rows.number }}</td>
                         <td>{{ rows.name }}</td>
                         <td>{{ rows.id }}</td>
