@@ -96,6 +96,8 @@ export default defineComponent({
             </div>
             </div> -->
 
+        <div class="overflow-x-scroll min-w-[700px]">
+            <div class="relative">
             <table class="w-full bg-gray-100">
                 <thead class="bg-[#0000fe] text-white h-[8vh]">
                     <th>S/N</th>
@@ -125,9 +127,10 @@ export default defineComponent({
                     </tr>
                 </tbody>
             </table>
-                </div>
-            </div>
         </div>
+        </div>
+    
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>
+    </div>
     </div>
 </template>
