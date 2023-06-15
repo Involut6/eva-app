@@ -101,10 +101,10 @@ export default defineComponent({
             <table class="w-full bg-gray-100">
                 <thead class="bg-[#0000fe] text-white h-[8vh]">
                     <th>S/N</th>
-                    <th>Name</th>
+                    <th>Client Name</th>
                     <th>Id</th>
-                    <th>Number of sample</th>
-                    <th>Date created</th>
+                    <th>Samples</th>
+                    <th>Date</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
@@ -116,9 +116,6 @@ export default defineComponent({
                         <td>{{ rows.dateReceived }}</td>
                         <td>
                             <div class="flex justify-center items-center space-x-4">
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
-                                </div>
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
                                 </div>

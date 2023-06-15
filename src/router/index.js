@@ -11,23 +11,23 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: 'Samples',
-          component: import('../components/ClientListPage.vue')
+          name: 'Clients',
+          component: () => import('../components/ClientListPage.vue')
         },
         {
           path: '/add-sample',
           name: 'Add-sample',
-          component: import('../components/AddSampleForm.vue')
+          component: () => import('../components/AddSampleForm.vue')
         },
         {
           path: '/client-details',
           name: 'Client-Details',
-          component: import('../components/ClientPage.vue')
+          component: () => import('../components/ClientPage.vue')
         },
         {
           path: '/feedback',
           name: 'Feedback',
-          component: import('../components/Feedback.vue')
+          component: () => import('../components/Feedback.vue')
         }
       ]
     },

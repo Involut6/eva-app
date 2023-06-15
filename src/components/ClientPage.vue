@@ -15,7 +15,8 @@ export default defineComponent({
             details: {},
             drop: false,
             analysis: useSampleStore().$state.analysis,
-            singleSample: {}
+            singleSample: {},
+            isAddModal: false
         }
     },
     methods: {
@@ -48,7 +49,7 @@ export default defineComponent({
                 </div>
                 <div class="flex justify-between max-[375px]:flex-col items-center gap-3">
                     <p class="font-semibold">Sample list</p>
-                    <button @click="isEditModal = true" class="bg-black text-white px-4 py-[10px] font-[600] rounded-lg">Add Sample</button>
+                    <button @click="isAddModal = true" class="bg-black text-white px-4 py-[10px] font-[600] rounded-lg">Add Sample</button>
                 </div>
             </div>  
         <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
@@ -160,6 +161,57 @@ export default defineComponent({
                     <input type="text" placeholder="Update result" class="outline-none">
                     <div>
                     <svg class="bg-black h-fit w-fit p-2 cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="white" d="M7.4 10h1.59v5c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-5h1.59c.89 0 1.34-1.08.71-1.71L12.7 3.7a.996.996 0 0 0-1.41 0L6.7 8.29c-.63.63-.19 1.71.7 1.71zM5 19c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1z"/></svg>
+                    </div>
+                  </div>
+                    
+                </div>
+
+                <button class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>
+            </div>
+        </div>
+            
+        
+    </div>  
+
+    </Teleport> 
+
+    <Teleport to="body">
+    <div @click.self="isAddModal = false" v-if="isAddModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
+        <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
+            <div class="px-6 py-5 border-b flex justify-between ">
+                <h1 class="font-[600] text-[18px]">Add Sample</h1>
+            </div>
+            <div class="px-6 py-[20px]">
+                <div class="flex space-x-4 items-center">
+                    <div class="space-y-1">
+                        <p>Sample name</p>
+                        <input type="text" v-model="singleSample.sampleType" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                    </div>
+                    <div class="py-[10px]">
+                        <h1>Sample status</h1>
+                        <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                            <option disabled value="">Status</option>
+                            <option>Received</option>
+                            <option>Preparation</option>
+                            <option>Analysis in progress</option>
+                            <option>Analysis Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-8 items-end">
+                  <div class="relative mt-4">
+                    <h1 class="">Add Analysis</h1>
+                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
+                        <p class="">Analysis</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
+                    </div>
+                    <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
+                        <div v-for="item in analysis" class="flex w-full justify-between items-center">
+                            <div class="flex gap-[5px] justify-start item-center ">
+                                <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
+                                <label :for="item.title" class="w-fit">{{item.title}}</label>
+                            </div>
+                        </div>
                     </div>
                   </div>
                     
