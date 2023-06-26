@@ -6,11 +6,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/home',
       name: 'home',
       component: HomeView,
       children: [
         {
-          path: '/',
+          path: '/home',
           name: 'Clients',
           component: () => import('../components/ClientListPage.vue')
         },
