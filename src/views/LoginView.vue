@@ -1,14 +1,13 @@
 <template>
   <div class="bg-gray-300 w-full h-screen flex items-center justify-center">
-      <div class="w-fit h-fit flex shadow-2xl">
-        <div class="h-[520px] w-[500px] bg-[#0000ff] rounded-s-[15px] bg-[url('../assets/Lab-1.jpg')] bg-no-repeat bg-cover overflow-hidden">
+      <div class="w-full md:w-fit h-fit flex rounded-[15px] shadow-2xl">
+        <div class="hidden lg:block h-[520px] w-[500px] bg-[#0000ff] rounded-s-[15px] bg-[url('../assets/Lab-1.jpg')] bg-no-repeat bg-cover overflow-hidden">
           <!-- <div class="w-full h-full bg-[#0000ff] opacity-60"></div> -->
         </div>
 
-        <div class="bg-[white] h-[520px] w-[500px] rounded-e-[15px] pt-[50px] px-[100px] text-center">
+        <div class="bg-[white] w-full h-[520px] md:w-[500px] md:rounded-[15px] lg:rounded-e-[15px] pt-[50px] px-[30px] md:px-[100px] text-center">
          <div class="border border-black border-1 w-fit mx-auto rounded-full p-[7px] bg-gray-100 mb-[15px]"> <img src="../assets/download-removebg-preview.png" alt="" class="w-[80px] "></div>
          <p class="font-semibold text-2xl text-gray-800">Sign in</p>
-         <p class="">Sign in to manage samples and feedbacks</p>
          <div class="h-fit mt-5">  
         <div class="mb-4">
           <p class="text-gray-800 flex justity-start">Email</p>
