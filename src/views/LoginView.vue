@@ -10,8 +10,8 @@
          <p class="font-semibold text-2xl text-gray-800">Sign in</p>
          <div class="h-fit mt-5">  
         <div class="mb-4">
-          <p class="text-gray-800 flex justity-start">Email</p>
-         <input placeholder="Enter your email" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" />
+          <p class="text-gray-800 flex justity-start">Username</p>
+         <input placeholder="Enter your username" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" />
         </div>
         
         <div class="mb-4">
