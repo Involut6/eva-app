@@ -1,11 +1,13 @@
 <script>
 import { defineComponent } from 'vue';
-import useSampleStore from '../stores/sample';
+import {useSampleStore} from '../stores/sample';
+import { getSamples } from '../services/DataServices';
 
 
 export default defineComponent({
     mounted() {
         this.details = useSampleStore().$state.client
+        this.fetchSamples(this.$route.params.id);
         console.log(this.details)
     },
     data() {
@@ -16,7 +18,14 @@ export default defineComponent({
             drop: false,
             analysis: useSampleStore().$state.analysis,
             singleSample: {},
-            isAddModal: false
+            isAddModal: false,
+            samples: [],
+            sampleName: '',
+            sampleStatus: '',
+            analysisName: '',
+            analysisStatus: '',
+            selected: [],
+            sampleId: '',
         }
     },
     methods: {
@@ -26,6 +35,31 @@ export default defineComponent({
         getSingleSample(sample) {
             this.isEditModal = true
             this.singleSample = sample
+        },
+        async fetchSamples(id) {
+            getSamples(id).then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    this.samples = response.data.data.samples;
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+        postSample() {
+            useSampleStore().addSample({
+                name: this.sampleName,
+                status: "Sample Received",
+                analyses: this.selected
+            }, this.$route.params.id)
+        },
+        deleteModal(id) {
+            this.isDeleteModal = true;
+            this.sampleId = id
+        },
+        deleteRow() {
+            useSampleStore().removeSample(this.$route.params.id, this.sampleId);
+            this.isDeleteModal = false;
         }
     }
 })
@@ -44,8 +78,8 @@ export default defineComponent({
         <div class="w-full h-fit md:px-[30px] px-4 pt-4 pb-[100px] lg:pb-4">
             <div class="bg-white md:px-[30px] px-4 py-5 space-y-4">
                 <div class="md:flex justify-between border-b py-4">
-                    <p class="text-lg font-semibold">{{ details.clientName }}</p>
-                    <p class="">Date created: {{ details.dateReceived }}</p>
+                    <p class="text-lg font-semibold">{{ details.name }}</p>
+                    <p class="">Date created: {{ details.received_date }}</p>
                 </div>
                 <div class="flex justify-between max-[375px]:flex-col items-center gap-3">
                     <p class="font-semibold">Sample list</p>
@@ -65,19 +99,19 @@ export default defineComponent({
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr class="text-center h-[7vh] border border-gray-300" :class="details.samples.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in details.samples" :key="row.id">
-                            <td>{{ row.sampleType }}</td>
-                            <td>{{ details.samples.indexOf(row) + 1 }}</td>
-                            <td>{{ row.dateReceived }}</td>
-                            <td>{{ row.sampleStatus }}</td>
-                            <td>{{ row.listOfAnalysis.length }}</td>
+                        <tr class="text-center h-[7vh] border border-gray-300" :class="samples?.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in samples" :key="row.id">
+                            <td>{{ row.name }}</td>
+                            <td>{{ details.id }}</td>
+                            <td>{{ row.created_date.toLocaleString('en-US') }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ }}</td>
                             <td>
                                 <div class="flex space-x-4 items-center justify-center">
 
                                     <div @click="getSingleSample(row)">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
                                     </div>
-                                    <div @click="isDeleteModal = true">
+                                    <div @click="deleteModal(row.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="delete-icon text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
                                     </div>
                                 </div>
@@ -99,7 +133,7 @@ export default defineComponent({
             <p class="text-xl font-semibold">Delete Sample</p>
             <p class="w-full">Are you sure you want to delete this sample?</p>
             <div class="flex space-x-3 mt-8 w-fit ml-auto mr-0">
-                <button class="bg-red-600 text-white px-3 py-2 rounded-lg font-medium">Delete</button>
+                <button class="bg-red-600 text-white px-3 py-2 rounded-lg font-medium" @click="deleteRow">Delete</button>
                 <button class="bg-[#0000fe] text-white px-3 py-2 rounded-lg font-medium" @click="isDeleteModal = false">Cancel</button>
             </div>
         </div>
@@ -148,9 +182,9 @@ export default defineComponent({
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                     </div>
                     <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
-                        <div v-for="item in analysis" class="flex w-full justify-between items-center">
+                        <div v-for="item in analysis" :key="item.title" class="flex w-full justify-between items-center">
                             <div class="flex gap-[5px] justify-start item-center ">
-                                <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
+                                <input type="checkbox" :id="item.title" :value="item" v-model="selected">
                                 <label :for="item.title" class="w-fit">{{item.title}}</label>
                             </div>
                         </div>
@@ -180,31 +214,31 @@ export default defineComponent({
                 <div class="md:flex md:space-x-4 items-center">
                     <div class="space-y-1">
                         <p>Sample name</p>
-                        <input type="text" v-model="singleSample.sampleType" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                        <input type="text" v-model="sampleName" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
                     <div class="py-[10px]">
                         <h1>Sample status</h1>
                         <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
                             <option disabled value="">Status</option>
-                            <option>Received</option>
-                            <option>Preparation</option>
-                            <option>Analysis in progress</option>
-                            <option>Analysis Completed</option>
+                            <option>Analysis Received</option>
+                            <option>Sample in Preparation</option>
+                            <option>Sample analysis in progress</option>
+                            <option>Sample analysis Completed</option>
                         </select>
                     </div>
                 </div>
                 <div class="flex gap-8 items-end">
                   <div class="relative mt-4">
                     <h1 class="">Add Analysis</h1>
-                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
+                    <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-full">
                         <p class="">Analysis</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                     </div>
                     <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
-                        <div v-for="item in analysis" class="flex w-full justify-between items-center">
+                        <div v-for="item in analysis" :key="item.name" class="flex w-full justify-between items-center">
                             <div class="flex gap-[5px] justify-start item-center ">
-                                <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
-                                <label :for="item.title" class="w-fit">{{item.title}}</label>
+                                <input type="checkbox" :id="item.name" :value="item" v-model="selected">
+                                <label :for="item.name" class="w-fit">{{item.name}}</label>
                             </div>
                         </div>
                     </div>
@@ -212,7 +246,7 @@ export default defineComponent({
                     
                 </div>
 
-                <button class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>
+                <button @click="postSample" class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>
             </div>
         </div>
             

@@ -1,12 +1,12 @@
 <script>
 
 import { defineComponent } from 'vue';
-import useSampleStore from '../stores/sample';
+import { useSampleStore } from '../stores/sample';
 
 export default defineComponent({
     data() {
         return {
-            client: useSampleStore().$state.clientList[4],
+            client: useSampleStore().$state.clients[4],
             isSampleModal: false,
             sampleData: {},
             isFeedback: false

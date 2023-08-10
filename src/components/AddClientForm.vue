@@ -1,19 +1,58 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import useSampleStore from '../stores/sample';
 import { ref } from 'vue';
 
-const { analysis, selectedAnalysis, samples } = storeToRefs(useSampleStore());
+const { analysis } = storeToRefs(useSampleStore());
 
 const newSample = ref({
     title: '',
     status: '',
-    sampleAnalysis: selectedAnalysis
+    sampleAnalysis: []
 })
 
 const drop = ref(false);
 const sample = ref(1)
 
+</script>
+<script>
+import { useSampleStore } from '../stores/sample';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    data() {
+        return {
+            id: '',
+            name: '',
+            type: '',
+            date: '',
+            sampleName:'',
+            selected: [],
+        }
+    },
+    mounted() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, "0");
+        let mm = String(today.getMonth() + 1).padStart(2, "0");
+        let yyyy = today.getFullYear();
+        this.date = `${dd}-${mm}-${yyyy}`
+        console.log(this.date);
+    },
+    methods: {
+        postClient() {
+                useSampleStore().addClient({
+                    name: this.name,
+                    type: this.type,
+                    received_date: this.date,
+                    client_id: this.id,
+                    sample: {
+                        name: this.sampleName,
+                        analyses: this.selected
+                    }
+            });
+        }
+    },
+
+})
 </script>
 
 <template>
@@ -30,22 +69,28 @@ const sample = ref(1)
                 </div>
                 <section class="px-4 md:px-[30px] py-[20px]">
                     <div class="grid w-full gap-4 lg:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        
+                      <div class="w-full">
+                        <h1 class="text-lg font-[400]">Client ID</h1>
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" placeholder="Enter client ID" v-model="id">
+                      </div>
+
                       <div class="w-full">
                         <h1 class="text-lg font-[400]">Client Name</h1>
-                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" placeholder="Enter client Name">
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" placeholder="Enter client Name" v-model="name">
                       </div>
 
                       <div class="">
                         <h1 class="text-lg font-[400]">Type of project</h1>
-                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" placeholder="Project type">
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" placeholder="Project type" v-model="type">
                       </div>
                       <div class="">
                         <h1 class="text-lg font-[400]">Date Received</h1>
-                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="date" placeholder="Project type">
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" v-model="date" placeholder="dd-mm-yyyy">
                       </div>
                       <div class="">
                         <h1 class="text-lg font-[400]">Sample Type</h1>
-                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" v-model="newSample.title" type="text">
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" v-model="sampleName" type="text">
                     </div>
                     <!-- <div class="">
                         <h1 class="text-lg font-[400]">Sample status</h1>
@@ -67,10 +112,10 @@ const sample = ref(1)
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                         </div>
                         <div v-if="drop" class="absolute top-[80px] right-0 z-10 bg-white w-[300px] h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
-                            <div v-for="item in analysis" class="flex w-full justify-between items-center">
+                            <div v-for="item in analysis" :key="item.name" class="flex w-full justify-between items-center">
                                 <div class="flex gap-[5px] justify-start item-center ">
-                                    <input type="checkbox" :id="item.title" :value="item" v-model="selectedAnalysis">
-                                    <label :for="item.title" class="w-fit">{{item.title}}</label>
+                                    <input type="checkbox" :id="item.name" :value="item.name" v-model="selected">
+                                    <label :for="item.name" class="w-fit">{{item.name}}</label>
                                 </div>
                                 <!-- <select class="focus:outline-none" v-model="item.status">
                                     <option value="" disabled>Status</option>
@@ -84,7 +129,7 @@ const sample = ref(1)
                 <!-- <div class="flex justify-start items-end w-fit  my-[15px] px-[30px] mr-0 ml-auto">
                     <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Add more</button>
                </div> -->
-            <div class="flex justify-start items-end  my-[15px] px-[30px]">
+            <div @click="postClient" class="flex justify-start items-end  my-[15px] px-[30px]">
                 <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Client</button>
                </div>
             </div>

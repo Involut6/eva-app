@@ -1,44 +1,44 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routes = [
     {
       path: '/',
-      redirect: '/login'
-    },
-    {
-      path: '/home',
-      name: 'home',
+      name: 'Home',
       component: HomeView,
+      meta: { auth: true },
       children: [
         {
-          path: '/home',
+          path: '',
           name: 'Clients',
-          component: () => import('../components/ClientListPage.vue')
+          component: () => import('../components/ClientListPage.vue'),
+          meta: { auth:true }
         },
         {
-          path: '/add-sample',
-          name: 'Add-sample',
-          component: () => import('../components/AddSampleForm.vue')
+          path: '/add-client',
+          name: 'Add-client',
+          component: () => import('../components/AddClientForm.vue'),
+          meta: { auth:true }
         },
         {
-          path: '/client-details',
+          path: '/client-details/:id',
           name: 'Client-Details',
-          component: () => import('../components/ClientPage.vue')
+          component: () => import('../components/ClientPage.vue'),
+          meta: { auth:true }
         },
         {
           path: '/feedback',
           name: 'Feedback',
-          component: () => import('../components/Feedback.vue')
+          component: () => import('../components/Feedback.vue'),
+          meta: { auth:true }
         }
       ]
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/LoginView.vue'),
+      meta: { auth: false }
     },
     {
       path: '/client',
@@ -51,6 +51,25 @@ const router = createRouter({
       component: () => import('../components/SampleInfo.vue')
     }
   ]
+
+  function isAuthenticated() {
+    const token = localStorage.getItem('token');
+    return !!token;
+  }
+
+  const router = createRouter({
+    history: createWebHistory(),
+    routes,
+  })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth && !isAuthenticated()) {
+    next({name: 'Login'});
+  } else if (!to.meta.auth && isAuthenticated()) {
+    next('/');
+  } else {
+    next();
+  }
 })
 
 export default router
