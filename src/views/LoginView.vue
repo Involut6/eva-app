@@ -28,6 +28,7 @@ export default defineComponent({
           console.log(response);
           if (response.status = 200) {
             localStorage.setItem('token', response.data.access_token);
+            sessionStorage.setItem('token', response.data.access_token)
             this.$router.push('/');
             this.isLoading = false,
             this.success = true

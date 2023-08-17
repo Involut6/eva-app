@@ -1,6 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { useSampleStore } from '../stores/sample';
+import { getClients, deleteClient } from '../services/DataServices';
 
 
 export default defineComponent({
@@ -12,12 +13,24 @@ export default defineComponent({
             drop: null,
             store: useSampleStore(),
             isDeleteModal: false,
-            deleteId: ''
+            deleteId: '',
+            isLoading: false,
+            message: '',
+            alert: false
         }
     },
     mounted() {
-        useSampleStore().setClients();
+        this.isLoading = true
+        getClients().then((response) => {
+            if (response.status === 200) {
+                console.log(response.data.data.clients)
+                useSampleStore().$state.clients = response.data.data.clients
+            }
+        }).catch(error => {
+            console.log(error);
+        }).finally(() => this.isLoading = false)
         useSampleStore().fetchStat();
+        
     },
     methods: {
         dropDown(id) {
@@ -33,9 +46,22 @@ export default defineComponent({
             this.deleteId = id
         },
         deleteRow() {
-            useSampleStore().removeClient(this.deleteId);
+            this.isLoading = true
+            deleteClient(this.deleteId).then((response) => {
+                console.log(response.data)
+                this.message = response.data.message
+            }).catch(error => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+                this.alert = true
+                setTimeout(() => {
+                    this.alert = false
+                }, 3000);
+            })
             this.isDeleteModal = false
             useSampleStore().setClients();
+            useSampleStore().fetchStat();
         }
     },
 })
@@ -94,36 +120,52 @@ export default defineComponent({
                 </div>
             </div>
             </div> -->
-
-        <div class="overflow-x-scroll">
+            <div v-if="isLoading" class="space-y-8">
+                    <div class = "centered w-full md:w-[400px] h-[200px]">
+                      <div class = "blob-1"></div>
+                      <div class = "blob-2"></div>
+                    </div>
+                </div>
+        <div v-else-if="store.$state.clients.length > 0" class="overflow-x-scroll">
             <div class="relative min-w-[700px]">
-            <table class="w-full bg-gray-100">
-                <thead class="bg-[#0000fe] text-white h-[8vh]">
-                    <th>S/N</th>
-                    <th>Client Name</th>
-                    <th>Id</th>
-                    <th>Samples</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    <tr class="text-center h-[7vh] text-[17px] border border-gray-300" v-for="(rows, index) in store.$state.clients" :key="rows.id" :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'">
-                        <td>{{ index+1 }}</td>
-                        <td @click="viewClient((rows.id), rows)" class="hover:bg-gray-400 cursor-pointer">{{ rows.name }}</td>
-                        <td>{{ rows.client_id }}</td>
-                        <td>{{ rows?.samples_count }}</td>
-                        <td>{{ rows.received_date.slice(0, 10) }}</td>
-                        <td>
-                            <div class="flex justify-center relative z-1 top-0 items-center space-x-4">
-                                <div @click="deleteModal(rows.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <!-- Loading State -->
+                <div>
+                    <table class="w-full bg-gray-100">
+                        <thead class="bg-[#0000fe] text-white h-[8vh]">
+                            <th>S/N</th>
+                            <th>Client Name</th>
+                            <th>Id</th>
+                            <th>Samples</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center h-[7vh] text-[17px] border border-gray-300" v-for="(rows, index) in store.$state.clients" :key="rows.id" :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'">
+                                <td>{{ index+1 }}</td>
+                                <td @click="viewClient((rows.id), rows)" class="hover:bg-gray-400 cursor-pointer">{{ rows.name }}</td>
+                                <td>{{ rows.client_id }}</td>
+                                <td>{{ rows?.samples_count }}</td>
+                                <td>{{ rows.received_date.slice(0, 10) }}</td>
+                                <td>
+                                    <div class="flex justify-center relative z-1 top-0 items-center space-x-4">
+                                        <div @click="deleteModal(rows.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+        <div v-else class="w-fit mx-auto py-8 text-center">
+            <div class="mb-4 p-4 bg-[#0000fe] rounded-full mx-auto w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 14"><path fill="none" stroke="#9AFF01" stroke-linecap="round" stroke-linejoin="round" d="M13.5 6A1.5 1.5 0 0 0 12 4.5H7l-1.44-3H2A1.5 1.5 0 0 0 .5 3v8A1.5 1.5 0 0 0 2 12.5h10a1.5 1.5 0 0 0 1.5-1.5Z"/></svg>
+            </div>
+            <p class="text-2xl font-medium">No Clients</p>
+            <p class="w-60 mb-8">There are no clients to view. Click to add client.</p>
+            <router-link to="/add-client" class="bg-[#0000fe] text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Clients</router-link>
         </div>
     
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>
@@ -143,4 +185,60 @@ export default defineComponent({
     </Teleport>
     </div>
     </div>
+    <div class="fixed top-20 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="alert ? 'left-16' : 'left-[-1000px]'">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+        <div>
+          <p class="text-xl font-medium">Success</p>
+          <p class="">{{ message }}</p>
+        </div>
+      </div>
+    </div>
 </template>
+
+<style scoped>
+.centered{
+  width:400px;
+  height:200px; 
+}
+.blob-1,.blob-2{
+  width:70px;
+  height:70px;
+  position:absolute;
+  background:#99ff00;
+  border-radius:50%;
+  top:40%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.blob-1{
+  left:20%;
+  animation:osc-l 2.5s ease infinite;
+}
+.blob-2{
+  left:80%;
+  animation:osc-r 2.5s ease infinite;
+  background:#0000fe;
+}
+@keyframes osc-l{
+  0%{left:20%;}
+  50%{left:50%;}
+  100%{left:20%;}
+}
+@keyframes osc-r{
+  0%{left:80%;}
+  50%{left:50%;}
+  100%{left:80%;}
+}
+@media (max-width: 500px) {
+    @keyframes osc-l{
+      0%{left:30%;}
+      50%{left:50%;}
+      100%{left:30%;}
+    }
+    @keyframes osc-r{
+      0%{left:80%;}
+      50%{left:50%;}
+      100%{left:80%;}
+    }
+}
+</style>

@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-
+import { postClient } from '../services/DataServices';
 const { analysis } = storeToRefs(useSampleStore());
 
 const newSample = ref({
@@ -27,29 +27,45 @@ export default defineComponent({
             date: '',
             sampleName:'',
             selected: [],
+            isLoading: false,
+            alert: false,
+            message: ''
         }
-    },
-    mounted() {
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, "0");
-        let mm = String(today.getMonth() + 1).padStart(2, "0");
-        let yyyy = today.getFullYear();
-        this.date = `${dd}-${mm}-${yyyy}`
-        console.log(this.date);
     },
     methods: {
-        postClient() {
-                useSampleStore().addClient({
-                    name: this.name,
-                    type: this.type,
-                    received_date: this.date,
-                    client_id: this.id,
-                    sample: {
-                        name: this.sampleName,
-                        analyses: this.selected
-                    }
-            });
-        }
+        async addClient() {
+            const [next, text] = this.date.split('T');
+            const [year, month, day] = next.split('-')
+            const formattedDate =`${day}-${month}-${year}`
+            this.isLoading = true
+            postClient({
+                name: this.name,
+                type: this.type,
+                received_date: formattedDate,
+                client_id: this.id,
+                sample: {
+                    name: this.sampleName,
+                    analyses: this.selected
+                }
+            }).then((response) => {
+                    console.log(response)
+                    this.message = response.data.message;
+                    console.log(this.message)
+            }).catch(error => {
+                this.message = 'All fields are required!'
+            }).finally(() =>{
+                this.isLoading = false
+                this.alert = true
+                setTimeout(() => {
+                    this.alert = false
+                }, 3000);
+                this.name = ''
+                this.type = ''
+                this.id = ''
+                this.sampleName = ''
+                this.selected = []
+            })
+        },
     },
 
 })
@@ -86,7 +102,7 @@ export default defineComponent({
                       </div>
                       <div class="">
                         <h1 class="text-lg font-[400]">Date Received</h1>
-                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="text" v-model="date" placeholder="dd-mm-yyyy">
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="date" v-model="date" placeholder="dd-mm-yyyy">
                       </div>
                       <div class="">
                         <h1 class="text-lg font-[400]">Sample Type</h1>
@@ -129,8 +145,15 @@ export default defineComponent({
                 <!-- <div class="flex justify-start items-end w-fit  my-[15px] px-[30px] mr-0 ml-auto">
                     <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Add more</button>
                </div> -->
-            <div @click="postClient" class="flex justify-start items-end  my-[15px] px-[30px]">
-                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Client</button>
+            <div @click="addClient" class="flex justify-start items-end  my-[15px] px-[30px]">
+                <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">
+                    <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">
+                      <span>Please wait</span>
+                      <div class="lds-dual-ring"></div>
+                    </div>
+                    <span v-else>Add Client</span>
+                </button>
+                
                </div>
             </div>
         
@@ -138,6 +161,50 @@ export default defineComponent({
         </div>
     </div>
     <div v-if="drop" @click="drop = false" class="w-[79vw] h-screen z-1 absolute top-0 left-0"></div>
+    <div v-if="message === 'All fields are required!'" class="absolute top-16 w-fit h-fit rounded-lg bg-red-100 border border-red-400 text-red-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"/></svg>
+        <div>
+          <p class="text-xl font-medium">Error</p>
+          <p class="">{{ message }}</p>
+        </div>
+      </div>
+    </div>
+    <div v-else class="absolute top-16 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+        <div>
+          <p class="text-xl font-medium">Success</p>
+          <p class="">{{ message }}</p>
+        </div>
+      </div>
+    </div>
+    
 </template>
 
-<style scoped></style>
+<style scoped>
+.lds-dual-ring {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+</style>

@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VUE_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
 const apiClient = axios.create({
-  baseURL: 'https://api.envaccord.dervac.com/api/',
+  baseURL: BASE_URL,
   headers: {
     "Content-type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem('token')}`
+    "Authorization": `Bearer ${localStorage.getItem('token')? localStorage.getItem('token') : sessionStorage.getItem('token')}`
     // "Authorization": localStorage.getItem('token')
   },
 });

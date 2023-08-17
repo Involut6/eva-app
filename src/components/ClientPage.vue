@@ -1,13 +1,22 @@
 <script>
 import { defineComponent } from 'vue';
 import {useSampleStore} from '../stores/sample';
-import { getSamples } from '../services/DataServices';
+import { getSamples, postSample, deleteSample } from '../services/DataServices';
 
 
 export default defineComponent({
     mounted() {
+        this.isLoading = true
         this.details = useSampleStore().$state.client
-        this.fetchSamples(this.$route.params.id);
+        getSamples(this.$route.params.id).then((response) => {
+            console.log(response)
+            if (response.status === 200 || response.status === 201) {
+                console.log(response.data.data.samples);
+                this.samples = response.data.data.samples
+            }
+        }).catch(error => {
+            console.log(error)
+        }).finally(() => this.isLoading = false)
         console.log(this.details)
     },
     data() {
@@ -26,6 +35,8 @@ export default defineComponent({
             analysisStatus: '',
             selected: [],
             sampleId: '',
+            isLoading: false,
+            alert: false
         }
     },
     methods: {
@@ -37,29 +48,52 @@ export default defineComponent({
             this.singleSample = sample
         },
         async fetchSamples(id) {
-            getSamples(id).then((response) => {
-                console.log(response)
-                if (response.status === 200) {
-                    this.samples = response.data.data.samples;
-                }
+            this.isLoading = true
+            getSamples(this.id).then((response) => {
+                this.samples = response.data.data.samples;
             }).catch(error => {
                 console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+                setTimeout(() => {
+                    this.alert = false
+                }, 1500);
             })
         },
         postSample() {
-            useSampleStore().addSample({
+            postSample({
                 name: this.sampleName,
                 status: "Sample Received",
                 analyses: this.selected
-            }, this.$route.params.id)
+            }, this.$route.params.id).then((response) => {
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+                this.alert = true
+                setTimeout(() => {
+                    this.alert = false
+                    this.isAddModal = false
+                }, 1500);
+            })
+            this.fetchSamples(this.$route.params.id);
         },
         deleteModal(id) {
             this.isDeleteModal = true;
             this.sampleId = id
         },
         deleteRow() {
-            useSampleStore().removeSample(this.$route.params.id, this.sampleId);
-            this.isDeleteModal = false;
+            this.isLoading = true
+            deleteSample(this.$route.params.id, this.sampleId).then((response) => {
+                console.log(response.data);
+            }).catch(error => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+                this.isDeleteModal = false
+                useSampleStore().fetchSamples(this.sampleId);
+            })
         }
     }
 })
@@ -67,9 +101,7 @@ export default defineComponent({
 </script>
 
 <template>
-
     <div class="container mx-auto min-h-screen w-full">
-
         <div class="px-4 md:px-8 pt-4 md:pt-8 flex space-x-2 items-center">
             <router-link to="/" class="text-[#0000fe]">Home</router-link>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6l-6-6z"/></svg>
@@ -79,7 +111,6 @@ export default defineComponent({
             <div class="bg-white md:px-[30px] px-4 py-5 space-y-4">
                 <div class="md:flex justify-between border-b py-4">
                     <p class="text-lg font-semibold">{{ details.name }}</p>
-                    <p class="">Date created: {{ details.received_date }}</p>
                 </div>
                 <div class="flex justify-between max-[375px]:flex-col items-center gap-3">
                     <p class="font-semibold">Sample list</p>
@@ -87,7 +118,13 @@ export default defineComponent({
                 </div>
             </div>  
         <div class="bg-white w-full shadow-xl pb-9 overflow-x-scroll">
-            <div class="space-y-5">
+            <div v-if="isLoading" class="space-y-8">
+                <div class = "centered">
+                  <div class = "blob-1"></div>
+                  <div class = "blob-2"></div>
+                </div>
+            </div>
+            <div v-else-if="samples.length > 0" class="space-y-5">
                 <div class="relative min-w-[700px]">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#0000fe] h-[8vh]">
@@ -101,10 +138,10 @@ export default defineComponent({
                     <tbody>
                         <tr class="text-center h-[7vh] border border-gray-300" :class="samples?.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in samples" :key="row.id">
                             <td>{{ row.name }}</td>
-                            <td>{{ details.id }}</td>
-                            <td>{{ row.created_date.toLocaleString('en-US') }}</td>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.created_date.substring(0, 10) }}</td>
                             <td>{{ row.status }}</td>
-                            <td>{{ }}</td>
+                            <td>{{ row.analyses.length }}</td>
                             <td>
                                 <div class="flex space-x-4 items-center justify-center">
 
@@ -121,7 +158,14 @@ export default defineComponent({
                 </table>
                 </div>
             </div>
-
+            <div v-else class="w-fit mx-auto py-8 text-center">
+                <div class="mb-4 p-4 bg-[#0000fe] rounded-full mx-auto w-fit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 14"><path fill="none" stroke="#9AFF01" stroke-linecap="round" stroke-linejoin="round" d="M13.5 6A1.5 1.5 0 0 0 12 4.5H7l-1.44-3H2A1.5 1.5 0 0 0 .5 3v8A1.5 1.5 0 0 0 2 12.5h10a1.5 1.5 0 0 0 1.5-1.5Z"/></svg>
+                </div>
+                <p class="text-2xl font-medium">No Sample</p>
+                <p class="mb-6">This client has no samples. Click to add sample.</p>
+                <button @click="isAddModal = true" class="bg-[#0000fe] text-white px-4 py-[10px] font-[600] rounded-lg">Add Sample</button>
+            </div>
         </div>
         </div>
 
@@ -246,10 +290,24 @@ export default defineComponent({
                     
                 </div>
 
-                <button @click="postSample" class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>
+                <button @click="postSample" class="px-4 py-2 rounded-lg bg-black text-white font-semibold mt-3">
+                    <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">
+                      <span>Please wait</span>
+                      <div class="lds-dual-ring"></div>
+                    </div>
+                    <span v-else>Save</span>
+                </button>
             </div>
         </div>
-            
+        <div class="fixed top-20 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="alert ? 'left-16' : 'left-[-1000px]'">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+        <div>
+          <p class="text-xl font-medium">Success</p>
+          <p class="">Sample added successfully!</p>
+        </div>
+      </div>
+    </div>
         
     </div>  
 
@@ -257,3 +315,75 @@ export default defineComponent({
 
 
 </template>
+
+<style scoped>
+.centered{
+  width:400px;
+  height:200px; 
+}
+.blob-1,.blob-2{
+  width:70px;
+  height:70px;
+  position:absolute;
+  background:#99ff00;
+  border-radius:50%;
+  top:40%;left:50%;
+  transform:translate(-50%,-50%);
+}
+.blob-1{
+  left:20%;
+  animation:osc-l 2.5s ease infinite;
+}
+.blob-2{
+  left:80%;
+  animation:osc-r 2.5s ease infinite;
+  background:#0000fe;
+}
+@keyframes osc-l{
+  0%{left:20%;}
+  50%{left:50%;}
+  100%{left:20%;}
+}
+@keyframes osc-r{
+  0%{left:80%;}
+  50%{left:50%;}
+  100%{left:80%;}
+}
+@media (max-width: 500px) {
+    @keyframes osc-l{
+      0%{left:30%;}
+      50%{left:50%;}
+      100%{left:30%;}
+    }
+    @keyframes osc-r{
+      0%{left:80%;}
+      50%{left:50%;}
+      100%{left:80%;}
+    }
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+</style>

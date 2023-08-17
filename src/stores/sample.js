@@ -369,21 +369,24 @@ export const useSampleStore = defineStore('sample', {
     //     }
     // ]
         clients: [],
-        stats: []
+        stats: [],
+        isLoading: false
 
     }),
     actions: {
         async setClients() {
+            this.isLoading = true
             getClients().then((response) => {
                 if (response.status === 200) {
                     console.log(response.data.data.clients)
-                    this.clients = response.data.data.clients
+                    useSampleStore().$state.clients = response.data.data.clients
                 }
             }).catch(error => {
                 console.log(error);
-            })
+            }).finally(() => this.isLoading = false)
         },
         async addClient(data) {
+            this.isLoading = true
             postClient(data).then((response) => {
                 if (response.status === 200) {
                     console.log(response.data.data)
@@ -391,8 +394,10 @@ export const useSampleStore = defineStore('sample', {
             }).catch(error => {
                 console.log(error);
             })
+            this.isLoading = false
         },
         async fetchSamples(id) {
+            this.isLoading = true
             getSamples(id).then((response) => {
                 console.log(response)
                 if (response.status === 200 || response.status === 201) {
@@ -404,33 +409,41 @@ export const useSampleStore = defineStore('sample', {
             })
         },
         async addSample(data, id) {
+            this.isLoading = true
             postSample(data, id).then((response) => {
                 console.log(response.data)
             }).catch(error => {
                 console.log(error)
             })
+            this.isLoading = false
         },
         async removeClient(id) {
+            this.isLoading = true
             deleteClient(id).then((response) => {
                 console.log(response.data)
             }).catch(error => {
                 console.log(error)
             })
+            this.isLoading = false
         },
         async removeSample(client, sample) {
+            this.isLoading = true
             deleteSample(client, sample).then((response) => {
                 console.log(response.data);
             }).catch(error => {
                 console.log(error)
             })
+            this.isLoading = false
         },
         async fetchStat() {
+            this.isLoading = true
             getStat().then((response) => {
                 console.log(response.data)
                 this.stats = response.data
             }).catch(error => {
                 console.log(error)
             })
+            this.isLoading = false
         }
     }
   })
