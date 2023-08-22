@@ -81,3 +81,23 @@ export async function getStat() {
         console.log(error)
     }
 }
+
+export async function getClientById(id) {
+    try {
+        const response = await http.get(`/clients/${id}`);
+        return response;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+export async function editSample(client, sample, data) {
+    try {
+        const response = await http.put(`/client/${client}/samples/${sample}`, data)
+        return response;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

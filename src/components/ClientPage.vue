@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import {useSampleStore} from '../stores/sample';
-import { getSamples, postSample, deleteSample } from '../services/DataServices';
+import { getSamples, postSample, deleteSample, editSample } from '../services/DataServices';
 
 
 export default defineComponent({
@@ -36,7 +36,9 @@ export default defineComponent({
             selected: [],
             sampleId: '',
             isLoading: false,
-            alert: false
+            alert: false,
+            message: '',
+            success: ''
         }
     },
     methods: {
@@ -49,7 +51,7 @@ export default defineComponent({
         },
         async fetchSamples(id) {
             this.isLoading = true
-            getSamples(this.id).then((response) => {
+            getSamples(id).then((response) => {
                 this.samples = response.data.data.samples;
             }).catch(error => {
                 console.log(error)
@@ -66,11 +68,18 @@ export default defineComponent({
                 status: "Sample Received",
                 analyses: this.selected
             }, this.$route.params.id).then((response) => {
-                console.log(response.data)
+                if (response.status === 200 || response.status === 201) {
+                    this.success = 'Success'
+                    console.log(response.data)
+                } else {
+                    this.success = 'Error'
+                }
             }).catch(error => {
                 console.log(error)
+                this.message = 'All fields are required!'
             }).finally(() => {
                 this.isLoading = false
+                this.message = 'Sample added successfully!'
                 this.alert = true
                 setTimeout(() => {
                     this.alert = false
@@ -93,6 +102,23 @@ export default defineComponent({
                 this.isLoading = false
                 this.isDeleteModal = false
                 useSampleStore().fetchSamples(this.sampleId);
+            })
+        },
+        editSample(id) {
+            this.isLoading = true
+            this.singleSample.analyses = [...this.singleSample.analyses, ...this.selected]
+            editSample(this.$route.params.id, id, this.singleSample).then((response) => {
+                console.log(response)
+            }).catch(error => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+                this.message = 'Sample updated successfully!'
+                this.alert = true
+                setTimeout(() => {
+                    this.alert = false
+                    this.isEditModal = false
+                }, 1500);
             })
         }
     }
@@ -128,12 +154,12 @@ export default defineComponent({
                 <div class="relative min-w-[700px]">
                     <table class="w-full bg-gray-100">
                     <thead class="text-white bg-[#0000fe] h-[8vh]">
-                        <th>Title</th>
-                        <th>Id</th>
-                        <th>Date created</th>
-                        <th>Status</th>
-                        <th>Analysis</th>
-                        <th>Action</th>
+                        <th class="w-[30%]">Title</th>
+                        <th class="w-[5%]">Id</th>
+                        <th class="w-[15%]">Date created</th>
+                        <th class="w-[30%]">Status</th>
+                        <th class="w-[10%]">Analysis</th>
+                        <th class="w-[10%]">Action</th>
                     </thead>
                     <tbody>
                         <tr class="text-center h-[7vh] border border-gray-300" :class="samples?.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in samples" :key="row.id">
@@ -186,60 +212,91 @@ export default defineComponent({
     <!-- Edit modal -->
     <Teleport to="body">
     <div @click.self="isEditModal = false" v-if="isEditModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
-        <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
-            <div class="px-6 py-5 border-b flex justify-between ">
-                <h1 class="font-[600] text-[18px]">Edit</h1>
+        <div class="bg-[white] h-[60vh] overflow-y-scroll shadow-xl">
+            <div class="sticky bg-white top-0 px-6 py-3 border-b flex justify-between">
+                <h1 class="font-[600] text-[18px]">Edit Sample</h1>
+                <svg @click="isEditModal = false" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z"/></svg>
             </div>
-            <div class="px-6 py-[20px]">
+            <div class="px-6 pt-[20px]">
                 <div class="md:flex md:space-x-4 items-center">
                     <div class="space-y-1">
                         <p>Sample name</p>
-                        <input type="text" v-model="singleSample.sampleType" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                        <input type="text" v-model="singleSample.name" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
                     <div class="py-[10px]">
                         <h1>Sample status</h1>
-                        <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
-                            <option disabled value="">Status</option>
-                            <option>Received</option>
-                            <option>Preparation</option>
-                            <option>Analysis in progress</option>
-                            <option>Analysis Completed</option>
+                        <select v-model="singleSample.status" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                            <option>Status</option>
+                            <option>Sample Received</option>
+                            <option>Sample in Preparation</option>
+                            <option>Sample Analysis in Progress</option>
+                            <option>Sample Analysis Completed</option>
+                            <option>QA/QC Ongoing</option>
+                            <option>QA/QC Completed</option>
+                            <option>Result is ready</option>
                         </select>
                     </div>
                 </div>
-                <div>
+                <div class="md:flex md:gap-8 items-end">
+                    <div class="relative mt-4">
+                    <h1 class="">Add Analysis</h1>
+                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300">
+                        <p class="">Analysis</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
+                    </div>
+                    <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow-xl rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
+                        <div v-for="item in analysis" :key="item.name" class="flex w-full justify-between border-t items-center">
+                            <div class="flex gap-[5px] justify-start item-center ">
+                                <input type="checkbox" :id="item.name" :value="item" v-model="selected">
+                                <div class="space-y-1">
+                                    <label :for="item.name" class="w-fit">{{item.name}}</label>
+                                    <select class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                                        <option>Analysis in Progress</option>
+                                        <option>Analysis Completed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  <input type="file" class="mt-4" placeholder="Upload result" />
+                    
+                </div>
+                <div class="my-4">
                     <p>List of Analysis</p>
-                    <div v-for="item in singleSample.listOfAnalysis" :key="item" class="flex mt-2 space-x-8 items-center">
+                    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div v-for="item in singleSample.analyses" class="border p-2">
+                            <p>{{item.name}}</p>
+                            <select v-model="item.status" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                                <option>Analysis in Progress</option>
+                                <option>Analysis Completed</option>
+                            </select>
+                            <!-- <div class="flex items-center space-x-2">
+                                <p>{{item.status}}</p>
+                                <svg v-if="item.status === 'Analysis in Progress'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14"><g fill="none" stroke="#0000fe" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13.5a6.5 6.5 0 1 1 6.21-8.41M13.5 7v.5"/><path stroke-dasharray=".889 1.778" d="M13.11 9.23a6.51 6.51 0 0 1-2.79 3.36"/><path d="m9.53 13l-.47.18"/></g></svg>
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#0000fe" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4L9.55 18Z"/></svg>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- <div v-for="item in singleSample.analyses" :key="item" class="flex mt-2 space-x-8 items-center">
                         <p class="">{{ item.name }}</p>
                         <div class="flex items-center space-x-2 px-2 py-[6px] rounded-full bg-[#99ff00] text-[#0000fe]">
                             <p class="text-sm font-medium">{{ item.status }}</p>
                             <svg v-if="item.status === 'In progress'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63M12.5 7v5.25l4.5 2.67l-.75 1.23L11 13V7h1.5Z"/></svg>
                             <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2.03v2.02c4.39.54 7.5 4.53 6.96 8.92c-.46 3.64-3.32 6.53-6.96 6.96v2c5.5-.55 9.5-5.43 8.95-10.93c-.45-4.75-4.22-8.5-8.95-8.97m-2 .03c-1.95.19-3.81.94-5.33 2.2L7.1 5.74c1.12-.9 2.47-1.48 3.9-1.68v-2M4.26 5.67A9.885 9.885 0 0 0 2.05 11h2c.19-1.42.75-2.77 1.64-3.9L4.26 5.67M15.5 8.5l-4.88 4.88l-2.12-2.12l-1.06 1.06l3.18 3.18l5.94-5.94L15.5 8.5M2.06 13c.2 1.96.97 3.81 2.21 5.33l1.42-1.43A8.002 8.002 0 0 1 4.06 13h-2m5.04 5.37l-1.43 1.37A9.994 9.994 0 0 0 11 22v-2a8.002 8.002 0 0 1-3.9-1.63Z"/></svg>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="md:flex md:gap-8 items-end">
-                  <div class="relative mt-4">
-                    <h1 class="">Add Analysis</h1>
-                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
-                        <p class="">Analysis</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
-                    </div>
-                    <div v-if="drop" class="absolute top-[80px] left-0 z-10 bg-white w-fit h-[250px] py-2 shadow rounded-lg px-[10px] space-y-2 border-1 sm:w-fit overflow-y-scroll">
-                        <div v-for="item in analysis" :key="item.title" class="flex w-full justify-between items-center">
-                            <div class="flex gap-[5px] justify-start item-center ">
-                                <input type="checkbox" :id="item.title" :value="item" v-model="selected">
-                                <label :for="item.title" class="w-fit">{{item.title}}</label>
-                            </div>
-                        </div>
-                    </div>
-                  </div> 
-
-                  <input type="file" class="mt-4" placeholder="Upload result" />
-                    
+                <div class="sticky bottom-0 py-3 border-t bg-white">
+                    <button @click="editSample(singleSample.id)" class="bg-[#0000ff] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">
+                      <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">
+                        <span>Please wait</span>
+                        <div class="lds-dual-ring"></div>
+                      </div>
+                      <span v-else>Save</span>
+                    </button>
                 </div>
-
-                <button class="px-3 py-1 rounded-lg bg-black text-white font-semibold mt-3">Save</button>
             </div>
         </div>
             
@@ -274,7 +331,7 @@ export default defineComponent({
                 <div class="flex gap-8 items-end">
                   <div class="relative mt-4">
                     <h1 class="">Add Analysis</h1>
-                    <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-full">
+                    <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300">
                         <p class="">Analysis</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4.243-4.242l1.415-1.414L12 12.172l2.828-2.828l1.415 1.414L12 15.001Z"/></svg>
                     </div>
@@ -299,15 +356,24 @@ export default defineComponent({
                 </button>
             </div>
         </div>
-        <div class="fixed top-20 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="alert ? 'left-16' : 'left-[-1000px]'">
-      <div class="flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
-        <div>
-          <p class="text-xl font-medium">Success</p>
-          <p class="">Sample added successfully!</p>
+        <div v-if="success === 'Success'" class="fixed top-20 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="alert ? 'left-16' : 'left-[-1000px]'">
+            <div class="flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+              <div>
+                <p class="text-xl font-medium">Success</p>
+                <p class="">{{ message }}</p>
+              </div>
+            </div>
         </div>
-      </div>
-    </div>
+        <div v-if="success === 'Error'" class="fixed top-20 w-fit h-fit rounded-lg bg-red-100 border border-red-400 text-red-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="alert ? 'left-16' : 'left-[-1000px]'">
+            <div class="flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+              <div>
+                <p class="text-xl font-medium">Error</p>
+                <p class="">{{ message }}</p>
+              </div>
+            </div>
+        </div>
         
     </div>  
 

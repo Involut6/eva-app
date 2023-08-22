@@ -9,14 +9,15 @@ export const useSampleStore = defineStore('sample', {
       client: {},
       analysis: [
         {
+            // id: 35,
+             name: 'pH',
+             status: 'Analysis in Progress',
+            //  analysisStatus: ['In progress', 'Completed']
+
+         },
+        {
             // id: 1,
             name: 'Temperature',
-            status: 'Analysis in Progress',
-            // analysisStatus: ['In progress', 'Completed']
-        },
-        {
-        //    id: 2,
-            name: 'Appearance',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -27,8 +28,15 @@ export const useSampleStore = defineStore('sample', {
             // analysisStatus: ['In progress', 'Completed']
         },
         {
+        //    id: 2,
+            name: 'Appearance',
+            status: 'Analysis in Progress',
+            // analysisStatus: ['In progress', 'Completed']
+        },
+        
+        {
         //    id: 4,
-            name: 'Conductivity',
+            name: 'Electrical Conductivity',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -46,7 +54,7 @@ export const useSampleStore = defineStore('sample', {
         },
         {
         //    id: 7,
-            // name: 'Turbidity',
+            name: 'Turbidity',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -88,7 +96,7 @@ export const useSampleStore = defineStore('sample', {
         },
         {
         //    id: 14,
-            // name: 'Chloride',
+            name: 'Chloride',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -124,7 +132,7 @@ export const useSampleStore = defineStore('sample', {
         },
         {
         //    id: 20,
-            // name: 'Sulphide',
+            name: 'Sulphide',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -166,7 +174,7 @@ export const useSampleStore = defineStore('sample', {
         },
         {
         //    id: 27,
-            name: 'E.Coli',
+            name: 'Total Coliform',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -215,13 +223,6 @@ export const useSampleStore = defineStore('sample', {
 
          },
          {
-            // id: 35,
-             name: 'pH',
-             status: 'Analysis in Progress',
-            //  analysisStatus: ['In progress', 'Completed']
-
-         },
-         {
             // id: 36,
              name: 'Phosphate',
              status: 'Analysis in Progress',
@@ -230,7 +231,7 @@ export const useSampleStore = defineStore('sample', {
          },
          {
             // id: 37,
-             name: 'Moisture-content',
+             name: 'Moisture Content',
              status: 'Analysis in Progress',
             //  analysisStatus: ['In progress', 'Completed']
 
@@ -247,7 +248,18 @@ export const useSampleStore = defineStore('sample', {
              name: 'TOC',
              status: 'Analysis in Progress',
             //  analysisStatus: ['In progress', 'Completed']
-
+         },
+         {
+            // id: 39,
+             name: 'Total Coliform',
+             status: 'Analysis in Progress',
+            //  analysisStatus: ['In progress', 'Completed']
+         },
+         {
+            // id: 39,
+             name: 'Feacal Coliform',
+             status: 'Analysis in Progress',
+            //  analysisStatus: ['In progress', 'Completed']
          },
     ],
     // clientList: [

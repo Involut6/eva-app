@@ -142,7 +142,7 @@ export default defineComponent({
                         <tbody>
                             <tr class="text-center h-[7vh] text-[17px] border border-gray-300" v-for="(rows, index) in store.$state.clients" :key="rows.id" :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'">
                                 <td>{{ index+1 }}</td>
-                                <td @click="viewClient((rows.id), rows)" class="hover:bg-gray-400 cursor-pointer">{{ rows.name }}</td>
+                                <td class="hover:bg-gray-400 cursor-pointer">{{ rows.name }}</td>
                                 <td>{{ rows.client_id }}</td>
                                 <td>{{ rows?.samples_count }}</td>
                                 <td>{{ rows.received_date.slice(0, 10) }}</td>
@@ -150,6 +150,9 @@ export default defineComponent({
                                     <div class="flex justify-center relative z-1 top-0 items-center space-x-4">
                                         <div @click="deleteModal(rows.id)">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="text-red-600 cursor-pointer" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7Zm2-5q0 .425.288.713T10 17q.425 0 .713-.288T11 16V9q0-.425-.288-.713T10 8q-.425 0-.713.288T9 9v7Zm4 0q0 .425.288.713T14 17q.425 0 .713-.288T15 16V9q0-.425-.288-.713T14 8q-.425 0-.713.288T13 9v7Z"/></svg>
+                                        </div>
+                                        <div @click="viewClient((rows.id), rows)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#0000fe" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5s5 2.24 5 5s-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3s3-1.34 3-3s-1.34-3-3-3z"/></svg>
                                         </div>
                                     </div>
                                 </td>

@@ -43,12 +43,14 @@ const routes = [
     {
       path: '/client',
       name: 'Client-page',
-      component: () => import('../views/SampleView.vue')
+      component: () => import('../views/SampleView.vue'),
+      meta: { auth: false },
     },
     {
-      path: '/client/samples',
+      path: '/client/:id',
       name: 'View-Samples',
-      component: () => import('../components/SampleInfo.vue')
+      component: () => import('../components/SampleInfo.vue'),
+      meta: { auth: false}
     }
   ]
 
@@ -63,13 +65,18 @@ const routes = [
   })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.auth && !isAuthenticated()) {
-    next({name: 'Login'});
-  } else if (!to.meta.auth && isAuthenticated()) {
-    next('/');
+  if (to.meta.auth) {
+    if (!isAuthenticated()) {
+      next({name: 'Login'});
+    } else {
+      next();
+    }
   } else {
     next();
   }
+  // if (!to.meta.auth && isAuthenticated()) {
+  //   next('/');
+  // }7
 })
 
 export default router

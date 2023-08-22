@@ -11,6 +11,7 @@ export default defineComponent({
       isLoading: false,
       validate: false,
       success: false,
+      error: false
     }
   },
   watch: {
@@ -30,15 +31,19 @@ export default defineComponent({
             localStorage.setItem('token', response.data.access_token);
             sessionStorage.setItem('token', response.data.access_token)
             this.$router.push('/');
-            this.isLoading = false,
             this.success = true
           } else {
             alert('Fields cannot be empty')
           }
         })
         .catch((error) => {
+          this.error = true
+          setTimeout(() => {
+            this.error = false
+          }, 2000);
+          console.log(error)
+        }).finally(()  => {
           this.isLoading = false
-          alert(error)
         })
       
     },
@@ -56,7 +61,7 @@ export default defineComponent({
         <div class="bg-[white] w-full h-[520px] md:w-[500px] md:rounded-[15px] lg:rounded-e-[15px] pt-[50px] px-[30px] md:px-[100px] text-center">
          <div class="border border-black border-1 w-fit mx-auto rounded-full p-[7px] bg-gray-100 mb-[15px]"> <img src="../assets/download-removebg-preview.png" alt="" class="w-[80px] "></div>
          <p class="font-semibold text-2xl text-gray-800">Sign in</p>
-         <div class="h-fit mt-5">  
+         <form @submit.prevent="login" class="h-fit mt-5">  
         <div class="mb-4">
           <p class="text-gray-800 flex justify-start">Username</p>
          <input placeholder="Enter your username" class="block focus:outline-none w-full px-3 py-2 border mt-2 mb-4 rounded-lg" v-model="username" />
@@ -81,26 +86,36 @@ export default defineComponent({
             </div> -->
           </div>
         </div>
-        <button @keydown.up="login" role="button" @click="login" class="bg-[#0000ff] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">
+        <button type="submit" @keydown.up="login" role="button" @click="login" class="bg-[#0000ff] w-full text-center py-[7px] h-fit rounded-[5px] text-white text-[16px] font-semibold">
           <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">
             <span>Please wait</span>
             <div class="lds-dual-ring"></div>
           </div>
           <span v-else>Login</span>
         </button>
-      </div>
+      </form>
         </div>
       </div>
   </div>
     <div class="absolute top-16 w-64 h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="success ? 'left-16' : 'left-[-1000px]'">
       <div class="flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
-        <div>
+        <div v-if="success">
           <p class="text-xl font-medium">Success</p>
           <p class="">Redirecting to dashboard</p>
         </div>
       </div>
     </div>
+    <div class="absolute top-16 w-fit h-fit rounded-lg bg-red-100 border border-red-400 text-red-600 shadow-lg px-4 py-2 transition-left duration-300 ease" :class="error ? 'left-16' : 'left-[-1000px]'">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
+        <div v-if="error">
+          <p class="text-xl font-medium">Error</p>
+          <p class="">Username or Password incorrect!</p>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <style scoped>
