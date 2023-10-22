@@ -1,10 +1,8 @@
 <script>
-import FeedbackForm from './FeedbackForm.vue';
 import { defineComponent } from 'vue';
 import { getClientById } from '../services/DataServices';
 
 export default defineComponent({
-    components: {FeedbackForm},
     data() {
         return {
             client: [],
@@ -17,6 +15,10 @@ export default defineComponent({
     mounted() {
         this.isLoading = true
           getClientById(this.$route.params.id).then(response => {
+            if (response.data.data.client.samples.length == 0) {
+                this.$router.push('/');
+                alert('You have no samples to view. Please contact the administrator.')
+            }
             console.log(response);
             if (response.status === 200) {
               this.client = response.data.data.client;
@@ -27,6 +29,7 @@ export default defineComponent({
           }).finally(() => {
             this.isLoading = false
           })
+        
     },
     methods: {
         singleSample(data) {
@@ -34,7 +37,7 @@ export default defineComponent({
             this.sampleData = data
         },
         back() {
-          this.$router.push('/client')
+          this.$router.push('/')
         }
     }
 })
@@ -45,17 +48,19 @@ export default defineComponent({
             <div @click="back" class="flex space-x-3 items-center">
                 <img class="h-[50px]" src="../assets/enva-logo.png" alt="">
             </div>
-            <div class="flex gap-8 items-center">
-                <div @click="isFeedback = true" class="flex gap-1 cursor-pointer">
-                    <svg class="text-[#0000fe]" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                        viewBox="0 0 32 32">
-                        <path fill="currentColor"
-                            d="M27.71 4.29a1 1 0 0 0-1.05-.23l-22 8a1 1 0 0 0 0 1.87l8.59 3.43L19.59 11L21 12.41l-6.37 6.37l3.44 8.59A1 1 0 0 0 19 28a1 1 0 0 0 .92-.66l8-22a1 1 0 0 0-.21-1.05Z" />
-                    </svg>
-                    <p href="#" class="text-[#0000fe] font-semibold">Send Feedback</p>
+            <div class="flex gap-8">
+                <div class="flex gap-8 items-center">
+                    <a href="https://forms.gle/Hbnxe7SauhUtbmZQ9" target="_blank" class="flex gap-1 cursor-pointer">
+                        <svg class="text-[#0000fe]" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                            viewBox="0 0 32 32">
+                            <path fill="currentColor"
+                                d="M27.71 4.29a1 1 0 0 0-1.05-.23l-22 8a1 1 0 0 0 0 1.87l8.59 3.43L19.59 11L21 12.41l-6.37 6.37l3.44 8.59A1 1 0 0 0 19 28a1 1 0 0 0 .92-.66l8-22a1 1 0 0 0-.21-1.05Z" />
+                        </svg>
+                        <p class="text-[#0000fe] font-semibold">Send Feedback</p>
+                    </a>
                 </div>
+                <p @click="back" class="text-[#0000fe] font-semibold cursor-pointer">Logout</p>
             </div>
-
         </div>
         <div class="container mx-auto min-h-screen w-full">
             <div class="w-full h-fit md:px-[50px] px-4 pb-[100px] lg:pb-4 mt-10">
@@ -115,8 +120,6 @@ export default defineComponent({
     </div>
 </div>
 <!-- Modals -->
-
-<FeedbackForm :open="isFeedback" @close="isFeedback = false" />
 
 <div @click.self="isSampleModal = false"  v-if="isSampleModal" class="h-screen w-screen fixed top-0 left-0 flex justify-center z-10 items-center bg-opacity-60 bg-black">
         <div class="p-5 rounded-lg bg-white w-[343px] md:w-[550px]">

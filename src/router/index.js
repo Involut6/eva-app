@@ -3,8 +3,8 @@ import HomeView from '../views/HomeView.vue'
 
 const routes = [
     {
-      path: '/',
-      name: 'Home',
+      path: '/admin',
+      name: 'Admin',
       component: HomeView,
       meta: { auth: true },
       children: [
@@ -15,48 +15,60 @@ const routes = [
           meta: { auth:true }
         },
         {
-          path: '/add-client',
+          path: '/admin/add-client',
           name: 'Add-client',
           component: () => import('../components/AddClientForm.vue'),
           meta: { auth:true }
         },
         {
-          path: '/client-details/:id',
+          path: '/admin/client-details/:id',
           name: 'Client-Details',
           component: () => import('../components/ClientPage.vue'),
-          meta: { auth:true }
+          meta: { auth:true },
         },
-        {
-          path: '/feedback',
-          name: 'Feedback',
-          component: () => import('../components/Feedback.vue'),
-          meta: { auth:true }
-        }
+        // {
+        //   path: '/feedback',
+        //   name: 'Feedback',
+        //   component: () => import('../components/Feedback.vue'),
+        //   meta: { auth:true }
+        // }
       ]
     },
     {
-      path: '/login',
+      path: '/admin/login',
       name: 'Login',
       component: () => import('../views/LoginView.vue'),
       meta: { auth: false }
     },
     {
-      path: '/client',
+      path: '/',
       name: 'Client-page',
       component: () => import('../views/SampleView.vue'),
       meta: { auth: false },
     },
     {
-      path: '/client/:id',
+      path: '/:id',
       name: 'View-Samples',
       component: () => import('../components/SampleInfo.vue'),
-      meta: { auth: false}
+      meta: { auth: false},
+      props: (route) => {
+        const id= Number.parseInt(route.params.id, 10)
+        if (Number.isNaN(id)) {
+          return 0
+        }
+        return { id }
+      }
     }
   ]
 
   function isAuthenticated() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') ? localStorage.getItem('token') : sessionStorage.getItem('token');
     return !!token;
+  }
+
+  function clientLogin() {
+    const logged = localStorage.getItem('client');
+    return !!client;
   }
 
   const router = createRouter({
@@ -74,9 +86,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-  // if (!to.meta.auth && isAuthenticated()) {
-  //   next('/');
-  // }7
-})
+});
+
 
 export default router

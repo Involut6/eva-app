@@ -16,15 +16,18 @@ export default defineComponent({
             deleteId: '',
             isLoading: false,
             message: '',
-            alert: false
+            alert: false,
+            currentPage: 1,
+            total_pages: 10
         }
     },
     mounted() {
         this.isLoading = true
-        getClients().then((response) => {
+        getClients(this.currentPage).then((response) => {
             if (response.status === 200) {
                 console.log(response.data.data.clients)
                 useSampleStore().$state.clients = response.data.data.clients
+                this.total_pages = response.data.data.pagination.total_pages
             }
         }).catch(error => {
             console.log(error);
@@ -39,7 +42,7 @@ export default defineComponent({
         viewClient(prod, client) {
             this.store.$state.client = client
             this.store.$state.clientID = prod
-            this.$router.push(`/client-details/${prod}`);
+            this.$router.push(`/admin/client-details/${prod}`);
         },
         deleteModal(id) {
             this.isDeleteModal = true
@@ -62,6 +65,22 @@ export default defineComponent({
             this.isDeleteModal = false
             useSampleStore().setClients();
             useSampleStore().fetchStat();
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--
+                useSampleStore().setClients(this.currentPage)
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.total_pages) {
+                this.currentPage++
+                useSampleStore().setClients(this.currentPage)
+            }
+        },
+        jump(page) {
+            this.currentPage = page
+            useSampleStore().setClients(this.currentPage);
         }
     },
 })
@@ -101,25 +120,7 @@ export default defineComponent({
                 </div>
             </div>
             <p class="md:my-4 mb-4 text-lg font-semibold">Client List</p>
-            <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6">
-                <div v-for="i in samples" :key="i.id">
-                <div class="flex bg-white w-full justify-between p-4 gap-6 rounded-md shadow-md relative">
-                    <div>
-                        <p>{{ i.clientName }}</p>
-                        <p class="mb-2 text-gray-600">{{ i.dateReceived }}</p>
-                        <p class="w-full whitespace-nowrap">Number of samples: {{ i.samples.length }}</p>
-                     </div>
-                    <div @click="dropDown(i.clientId)">
-                        <svg fill="currentColor" class="rotate-90" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="36px" height="32px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <path d="M256,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S273.7,224,256,224L256,224z"/> <path d="M128.4,224c-17.7,0-32,14.3-32,32s14.3,32,32,32c17.7,0,32-14.3,32-32S146,224,128.4,224L128.4,224z"/> <path d="M384,224c-17.7,0-32,14.3-32,32s14.3,32,32,32s32-14.3,32-32S401.7,224,384,224L384,224z"/> </g> </svg>
-                    </div>
-                    <div v-if="drop === i.clientId" class="bg-white shadow-xl border-2 w-[165px] absolute py-2 z-20 rounded-md right-[1.2rem] top-[3rem]">
-                        <div @click="viewClient(i)" class="hover:bg-gray-200 cursor-pointer"><p class="p-2">View Details</p></div>
-                        <div class="hover:bg-gray-200 cursor-pointer"><p class="p-2">Edit</p></div>
-                        <div class="hover:bg-gray-200 cursor-pointer "><p class="p-2">Delete</p></div>
-                    </div>
-                </div>
-            </div>
-            </div> -->
+            
             <div v-if="isLoading" class="space-y-8">
                     <div class = "centered w-full md:w-[400px] h-[200px]">
                       <div class = "blob-1"></div>
@@ -159,6 +160,17 @@ export default defineComponent({
                             </tr>
                         </tbody>
                     </table>
+                    <div class="w-full my-6">
+                        <div class="w-fit flex items-center justify-center bg-white mx-auto border border-gray-300 rounded-lg">
+                            <div @click="prevPage" class="px-4 py-2 border-e border-gray-300 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="" d="m6.8 13l2.9 2.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275l-4.6-4.6q-.15-.15-.213-.325T3.426 12q0-.2.063-.375T3.7 11.3l4.6-4.6q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L6.8 11H20q.425 0 .713.288T21 12q0 .425-.288.713T20 13H6.8Z"/></svg>
+                            </div>
+                            <p class="px-4 py-2 cursor-pointer" @click="jump(page)" :class="page === currentPage? 'text-[#0000fe] font-bold': 'text-black'" v-for="page in total_pages" :key="page">{{ page }}</p>
+                            <div @click="nextPage" class="px-4 py-2 border-s border-gray-300 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.15 13H5q-.425 0-.713-.288T4 12q0-.425.288-.713T5 11h11.15L13.3 8.15q-.3-.3-.288-.7t.288-.7q.3-.3.713-.313t.712.288L19.3 11.3q.15.15.213.325t.062.375q0 .2-.063.375t-.212.325l-4.575 4.575q-.3.3-.712.288t-.713-.313q-.275-.3-.288-.7t.288-.7L16.15 13Z"/></svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,7 +180,7 @@ export default defineComponent({
             </div>
             <p class="text-2xl font-medium">No Clients</p>
             <p class="w-60 mb-8">There are no clients to view. Click to add client.</p>
-            <router-link to="/add-client" class="bg-[#0000fe] text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Clients</router-link>
+            <router-link to="/admin/add-client" class="bg-[#0000fe] text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Clients</router-link>
         </div>
     
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>

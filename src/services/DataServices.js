@@ -12,9 +12,9 @@ export async function UserLogin(username, password) {
     }
 }
 
-export async function getClients() {
+export async function getClients(data) {
     try {
-        const response = await http.get('/clients');
+        const response = await http.get(`/clients?per_page=10&page=${data}`);
         return response;
     }
     catch(error) {

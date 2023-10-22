@@ -29,7 +29,8 @@ export default defineComponent({
             selected: [],
             isLoading: false,
             alert: false,
-            message: ''
+            message: '',
+            error: false
         }
     },
     methods: {
@@ -52,7 +53,13 @@ export default defineComponent({
                     this.message = response.data.message;
                     console.log(this.message)
             }).catch(error => {
+              this.error = true
+              if (error.message === "Cannot read properties of undefined (reading 'data')")
+              {
                 this.message = 'All fields are required!'
+              } else {
+                this.message = 'Please refresh and try again!'
+              }
             }).finally(() =>{
                 this.isLoading = false
                 this.alert = true
@@ -161,7 +168,7 @@ export default defineComponent({
         </div>
     </div>
     <div v-if="drop" @click="drop = false" class="w-[79vw] h-screen z-1 absolute top-0 left-0"></div>
-    <div v-if="message === 'All fields are required!'" class="absolute top-16 w-fit h-fit rounded-lg bg-red-100 border border-red-400 text-red-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
+    <div v-if="error" class="fixed top-20 w-fit h-fit rounded-lg bg-red-100 border border-red-400 text-red-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
       <div class="flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"/></svg>
         <div>
@@ -170,7 +177,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <div v-else class="absolute top-16 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
+    <div v-else class="fixed top-20 w-fit h-fit rounded-lg bg-[#F1FCE0] border border-[#9AFF01] text-green-600 shadow-lg px-4 py-2 transition-left duration-500 ease-in" :class="alert ? 'left-16' : 'left-[-1000px]'">
       <div class="flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"/></svg>
         <div>

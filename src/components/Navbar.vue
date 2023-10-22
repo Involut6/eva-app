@@ -10,7 +10,7 @@ export default defineComponent({
   methods: {
     logout() {
       localStorage.clear();
-      this.$router.push('/login');
+      this.$router.push('/admin/login');
     }
   }
 })

@@ -168,7 +168,7 @@ export const useSampleStore = defineStore('sample', {
         },
         {
         //    id: 26,
-            name: 'TCC',
+            name: 'THC',
             status: 'Analysis in Progress',
             // analysisStatus: ['In progress', 'Completed']
         },
@@ -386,9 +386,9 @@ export const useSampleStore = defineStore('sample', {
 
     }),
     actions: {
-        async setClients() {
+        async setClients(data) {
             this.isLoading = true
-            getClients().then((response) => {
+            getClients(data).then((response) => {
                 if (response.status === 200) {
                     console.log(response.data.data.clients)
                     useSampleStore().$state.clients = response.data.data.clients
