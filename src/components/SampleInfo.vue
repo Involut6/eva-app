@@ -1,6 +1,8 @@
 <script>
 import { defineComponent } from 'vue';
 import { getClientById } from '../services/DataServices';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 export default defineComponent({
     data() {
@@ -9,7 +11,8 @@ export default defineComponent({
             isSampleModal: false,
             sampleData: {},
             isFeedback: false,
-            isLoading: true
+            isLoading: true,
+            downloadUrl: ''
         }
     },
     mounted() {
@@ -38,7 +41,7 @@ export default defineComponent({
         },
         back() {
           this.$router.push('/')
-        }
+        },
     }
 })
 </script>
@@ -47,23 +50,33 @@ export default defineComponent({
         <div class="sticky top-0 z-10 bg-white w-full py-3 flex items-center justify-between px-4 md:px-[50px] border-b">
             <div @click="back" class="flex space-x-3 items-center">
                 <img class="h-[50px]" src="../assets/enva-logo.png" alt="">
+                <div class="hidden md:flex">
+                  <span class="text-xl font-bold text-[#9AFF01]">Env</span>
+                  <span class="text-xl font-bold text-[#0000fe]">Accord <span class="text-xl text-gray-900 font-bold">Smart Lab</span></span>
+                </div>
             </div>
             <div class="flex gap-8">
-                <div class="flex gap-8 items-center">
+                <div class="flex gap-2 items-center">
                     <a href="https://forms.gle/Hbnxe7SauhUtbmZQ9" target="_blank" class="flex gap-1 cursor-pointer">
                         <svg class="text-[#0000fe]" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                             viewBox="0 0 32 32">
                             <path fill="currentColor"
                                 d="M27.71 4.29a1 1 0 0 0-1.05-.23l-22 8a1 1 0 0 0 0 1.87l8.59 3.43L19.59 11L21 12.41l-6.37 6.37l3.44 8.59A1 1 0 0 0 19 28a1 1 0 0 0 .92-.66l8-22a1 1 0 0 0-.21-1.05Z" />
                         </svg>
-                        <p class="text-[#0000fe] font-semibold">Send Feedback</p>
+                        <a href="src\assets\feedback.pdf" class="text-[#0000fe] font-semibold" download>Download Feedback Form</a>
                     </a>
                 </div>
                 <p @click="back" class="text-[#0000fe] font-semibold cursor-pointer">Logout</p>
             </div>
         </div>
         <div class="container mx-auto min-h-screen w-full">
+            
             <div class="w-full h-fit md:px-[50px] px-4 pb-[100px] lg:pb-4 mt-10">
+                <div class="md:hidden w-full text-center">
+                  <span class="text-xl font-bold text-[#9AFF01]">Env</span>
+                  <span class="text-xl font-bold text-[#0000fe]">Accord</span>
+                  <span class="text-xl font-bold ml-2">Smart Lab</span>
+                </div>
                 <div class="bg-white md:px-[30px] px-4 py-5 space-y-4">
                     <div class="flex justify-between border-b py-4">
                         <p class="text-lg font-bold">{{ client.name }}</p>
@@ -116,6 +129,10 @@ export default defineComponent({
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="flex text-xs w-full mt-8 text-center items-center justify-center gap-3">
+          <p class="">Copyright © 2023 - Dervac - All Right Reserved.</p>
+          <p class="">Version 1.0</p>
         </div>
     </div>
 </div>
@@ -170,7 +187,7 @@ export default defineComponent({
                 </div>
             </div>
             <div class="ml-auto mr-0 w-fit mt-5">
-                <button class="px-3 py-2 rounded-lg bg-gray-300 text-white">Download Result</button>
+                <a :href="sampleData.file_path" target="_blank" class="px-3 py-2 rounded-lg bg-[#0000FF] text-white" :class="sampleData.status !== 'Result is ready' ? 'bg-gray-300' : 'cursor-pointer'">Download Result</a>
             </div>
             </div>
         </div>

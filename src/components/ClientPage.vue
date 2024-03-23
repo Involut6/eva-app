@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import {useSampleStore} from '../stores/sample';
 import { getSamples, postSample, deleteSample, editSample } from '../services/DataServices';
+import * as XLSX from 'xlsx';
 
 
 export default defineComponent({
@@ -38,7 +39,12 @@ export default defineComponent({
             isLoading: false,
             alert: false,
             message: '',
-            success: ''
+            success: '',
+            file: {},
+            dateSampled: '',
+            sampleId: '',
+            sampleStatus: ''
+
         }
     },
     methods: {
@@ -62,11 +68,18 @@ export default defineComponent({
                 }, 1500);
             })
         },
+        handleFileUpload(e){
+           const selectedImage = e.target.files[0];
+            
+            this.file = selectedImage
+        },
         postSample() {
             postSample({
                 name: this.sampleName,
-                status: "Sample Received",
-                analyses: this.selected
+                status: this.sampleStatus,
+                analyses: this.selected,
+                date_sampled: this.dateSampled,
+                sample_id: this.sampleId
             }, this.$route.params.id).then((response) => {
                 if (response.status === 200 || response.status === 201) {
                     this.success = 'Success'
@@ -101,26 +114,45 @@ export default defineComponent({
             }).finally(() => {
                 this.isLoading = false
                 this.isDeleteModal = false
-                useSampleStore().fetchSamples(this.sampleId);
+                useSampleStore().fetchSamples(this.$route.params.id);
+
             })
         },
         editSample(id) {
+            const formData = new FormData()
             this.isLoading = true
             this.singleSample.analyses = [...this.singleSample.analyses, ...this.selected]
-            editSample(this.$route.params.id, id, this.singleSample).then((response) => {
+            console.log(typeof(this.singleSample.analyses))
+            this.singleSample.analyses.forEach((analysis, index) => {
+              formData.append(`analyses[${index}][name]`, analysis.name)
+              formData.append(`analyses[${index}][status]`, analysis.status)
+              formData.append(`analyses[${index}][id]`, analysis.id)
+            })
+            if (this.file.name) {
+                formData.append('file', this.file)
+            }
+            // formData.append('analyses', this.singleSample.analyses)
+            formData.append('status', this.singleSample.status)
+            formData.append('name', this.singleSample.name)
+            formData.append('date_sampled', this.singleSample.date_sampled)
+            formData.append('sample_id', this.singleSample.sample_id)
+            formData.append('_method', 'put')
+            editSample(this.$route.params.id, id, formData).then((response) => {
                 console.log(response)
             }).catch(error => {
                 console.log(error)
             }).finally(() => {
+                this.success = 'Success'
                 this.isLoading = false
                 this.message = 'Sample updated successfully!'
+                useSampleStore().fetchSamples(this.$route.params.id);
                 this.alert = true
                 setTimeout(() => {
                     this.alert = false
                     this.isEditModal = false
                 }, 1500);
             })
-        }
+        },
     }
 })
 
@@ -129,7 +161,7 @@ export default defineComponent({
 <template>
     <div class="container mx-auto min-h-screen w-full">
         <div class="px-4 md:px-8 pt-4 md:pt-8 flex space-x-2 items-center">
-            <router-link to="/" class="text-[#0000fe]">Home</router-link>
+            <router-link to="/admin" class="text-[#0000fe]">Home</router-link>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6L8.59 7.41L13.17 12l-4.58 4.59L10 18l6-6l-6-6z"/></svg>
             <p>Client Details</p>
         </div>
@@ -153,23 +185,25 @@ export default defineComponent({
             <div v-else-if="samples.length > 0" class="space-y-5">
                 <div class="relative min-w-[700px]">
                     <table class="w-full bg-gray-100">
-                    <thead class="text-white bg-[#0000fe] h-[8vh]">
-                        <th class="w-[30%]">Title</th>
-                        <th class="w-[5%]">Id</th>
-                        <th class="w-[15%]">Date created</th>
-                        <th class="w-[30%]">Status</th>
+                    <thead class="text-white px-4 text-left bg-[#0000fe] h-[8vh]">
+                        <th class="w-[26%] pl-8">Sample Type</th>
+                        <th class="w-[10%]">Sample Id</th>
+                        <th class="w-[12%]">Date created</th>
+                        <th class="w-[12%]">Date sampled</th>
+                        <th class="w-[20%]">Status</th>
                         <th class="w-[10%]">Analysis</th>
-                        <th class="w-[10%]">Action</th>
+                        <th class="w-[10%] pr-8">Action</th>
                     </thead>
                     <tbody>
-                        <tr class="text-center h-[7vh] border border-gray-300" :class="samples?.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in samples" :key="row.id">
-                            <td>{{ row.name }}</td>
-                            <td>{{ row.id }}</td>
+                        <tr class="text-left h-[7vh] border border-gray-300" :class="samples?.indexOf(row) % 2 === 0 ? 'bg-gray-100' : 'bg-white'" v-for="row in samples" :key="row.id">
+                            <td class="pl-8">{{ row.name }}</td>
+                            <td>{{ row.sample_id }}</td>
                             <td>{{ row.created_date.substring(0, 10) }}</td>
+                            <td>{{ row.date_sampled?.substring(0, 10) }}</td>
                             <td>{{ row.status }}</td>
                             <td>{{ row.analyses.length }}</td>
-                            <td>
-                                <div class="flex space-x-4 items-center justify-center">
+                            <td class="pr-8">
+                                <div class="flex space-x-4 items-center justify-left">
 
                                     <div @click="getSingleSample(row)">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="text-[#0000fe] cursor-pointer active:text-red" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2L17.875 1.9L22.1 6.125l-2.8 2.8ZM3 21v-4.25l10.6-10.6l4.25 4.25L7.25 21H3Z"/></svg>
@@ -209,6 +243,7 @@ export default defineComponent({
         </div>
     </div>
     </Teleport>
+    
     <!-- Edit modal -->
     <Teleport to="body">
     <div @click.self="isEditModal = false" v-if="isEditModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
@@ -219,11 +254,11 @@ export default defineComponent({
             </div>
             <div class="px-6 pt-[20px]">
                 <div class="md:flex md:space-x-4 items-center">
-                    <div class="space-y-1">
-                        <p>Sample name</p>
+                    <div class="text-sm space-y-1">
+                        <p>Sample type</p>
                         <input type="text" v-model="singleSample.name" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
-                    <div class="py-[10px]">
+                    <div class="text-sm py-[10px]">
                         <h1>Sample status</h1>
                         <select v-model="singleSample.status" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
                             <option>Status</option>
@@ -238,7 +273,7 @@ export default defineComponent({
                     </div>
                 </div>
                 <div class="md:flex md:gap-8 items-end">
-                    <div class="relative mt-4">
+                    <div class="text-sm relative mt-4">
                     <h1 class="">Add Analysis</h1>
                     <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300">
                         <p class="">Analysis</p>
@@ -259,11 +294,33 @@ export default defineComponent({
                         </div>
                     </div>
                   </div>
-
-                  <input type="file" class="mt-4" placeholder="Upload result" />
+                  <div class="w-full">
+                      <h1 class="text-sm">Date Sampled</h1>
+                      <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="date" v-model="singleSample.date_sampled" placeholder="dd-mm-yyyy">
+                    </div>
                     
                 </div>
-                <div class="my-4">
+                
+                <div class="space-y-1 mt-4">
+                        <p>Sample ID</p>
+                        <input type="text" v-model="singleSample.sample_id" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
+                    </div>
+                <label v-if="singleSample.status === 'Result is ready'" @dragenter.prevent="" @dragleave.prevent="" @dragover.prevent @drop.prevent="drop" 
+                    class="w-full h-fit flex flex-col items-center mt-4 space-y-3 px-6 py-4 transition bg-white border border-gray-200 rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+                        <div>
+                            <div class="text-gray-700 text-[12px]">
+                            <p class="text-[#0000ff] text-center cursor-pointer font-semibold rounded-lg">Click here to upload</p>
+                            <div class="text-xs font-medium" v-if="file?.size">{{ file.name }}</div>
+
+                            <div v-else class="text-gray-700 text-center text-[12px]">
+                          Excel file or spreadsheets
+                        </div>
+                        </div>
+                        
+                        </div>
+                    <input type="file" name="file_upload" class="hidden" ref="file" @change="handleFileUpload">
+                </label>
+                <div class="my-4 text-sm">
                     <p>List of Analysis</p>
                     <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div v-for="item in singleSample.analyses" class="border p-2">
@@ -305,6 +362,8 @@ export default defineComponent({
 
     </Teleport> 
 
+    <!-- Add Sample Modal -->
+
     <Teleport to="body">
     <div @click.self="isAddModal = false" v-if="isAddModal" class="fixed top-0 left-0 h-screen w-screen z-40 flex justify-center items-center bg-opacity-75 bg-black">
         <div class="my-[20px] bg-[white] py-[10px] shadow-xl">
@@ -317,19 +376,16 @@ export default defineComponent({
                         <p>Sample name</p>
                         <input type="text" v-model="sampleName" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
-                    <div class="py-[10px]">
-                        <h1>Sample status</h1>
-                        <select v-model="singleSample.sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
-                            <option disabled value="">Status</option>
-                            <option>Analysis Received</option>
-                            <option>Sample in Preparation</option>
-                            <option>Sample analysis in progress</option>
-                            <option>Sample analysis Completed</option>
-                        </select>
+                    <div class="space-y-1">
+                        <p>Sample ID</p>
+                        <input type="text" v-model="sampleId" class="focus:outline-none px-3 py-1 border rounded w-[250px]">
                     </div>
+                    
+                    
                 </div>
-                <div class="flex gap-8 items-end">
-                  <div class="relative mt-4">
+                
+                <div class="flex gap-4 items-center">
+                  <div class="relative">
                     <h1 class="">Add Analysis</h1>
                     <div @click="() => drop = !drop" class="flex w-[200px] items-center justify-between py-1 pl-3 rounded border border-gray-300">
                         <p class="">Analysis</p>
@@ -344,8 +400,21 @@ export default defineComponent({
                         </div>
                     </div>
                   </div>
-                    
+                  <div class="py-[10px] w-full">
+                      <h1 class="text-sm font-[400]">Date Sampled</h1>
+                      <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="date" v-model="dateSampled" placeholder="dd-mm-yyyy">
+                    </div>
                 </div>
+                <div class="py-2">
+                        <h1>Sample status</h1>
+                        <select v-model="sampleStatus" class="border focus:outline-none border-solid border-gray-300 border-1 p-[5px] rounded-[5px]">
+                            <option disabled value="">Status</option>
+                            <option>Analysis Received</option>
+                            <option>Sample in Preparation</option>
+                            <option>Sample analysis in progress</option>
+                            <option>Sample analysis Completed</option>
+                        </select>
+                    </div>
 
                 <button @click="postSample" class="px-4 py-2 rounded-lg bg-black text-white font-semibold mt-3">
                     <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">

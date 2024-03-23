@@ -30,7 +30,9 @@ export default defineComponent({
             isLoading: false,
             alert: false,
             message: '',
-            error: false
+            error: false,
+            dateSampled: '',
+            sampleId: '',
         }
     },
     methods: {
@@ -46,7 +48,9 @@ export default defineComponent({
                 client_id: this.id,
                 sample: {
                     name: this.sampleName,
-                    analyses: this.selected
+                    analyses: this.selected,
+                    date_sampled: this.dateSampled,
+                    sample_id: this.sampleId
                 }
             }).then((response) => {
                     console.log(response)
@@ -71,6 +75,9 @@ export default defineComponent({
                 this.id = ''
                 this.sampleName = ''
                 this.selected = []
+                this.sampleId = ''
+                this.date = ''
+                this.dateSampled = ''
             })
         },
     },
@@ -115,20 +122,7 @@ export default defineComponent({
                         <h1 class="text-lg font-[400]">Sample Type</h1>
                         <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" v-model="sampleName" type="text">
                     </div>
-                    <!-- <div class="">
-                        <h1 class="text-lg font-[400]">Sample status</h1>
-                        <select class="border w-full focus:outline-none border-solid border-gray-300 border-1 p-2 pr-2 rounded-[5px]" v-model="newSample.status">
-                            <option disabled value="">Status</option>
-                            <option>Received</option>
-                            <option>Analysis in progress</option>
-                            <option>Analysis Completed</option>
-                            <option>QA/QC in progress</option>
-                            <option>Sample preparation in progress</option>
-                            <option>QA/QC in completed</option>
-                            <option>Result ready to download</option>
-                        </select>
-                    </div> -->
-                    <section class="relative">
+                    <section class="relative w-full">
                         <h1 class="text-lg font-[400]">List of Analysis</h1>
                         <div @click="() => drop = !drop" class="flex w-full items-center justify-between py-1 pl-3 rounded border border-gray-300 w-[200px]">
                             <p class="">Analysis</p>
@@ -140,19 +134,23 @@ export default defineComponent({
                                     <input type="checkbox" :id="item.name" :value="item.name" v-model="selected">
                                     <label :for="item.name" class="w-fit">{{item.name}}</label>
                                 </div>
-                                <!-- <select class="focus:outline-none" v-model="item.status">
-                                    <option value="" disabled>Status</option>
-                                    <option v-for="option in item.analysisStatus" :value="option">{{ option }}</option>
-                                </select> -->
                             </div>
                          </div>
                     </section>
+                    <div class="">
+                        <h1 class="text-lg font-[400]">Sample Id</h1>
+                        <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" v-model="sampleId" type="text">
+                    </div>
+                    <div class="">
+                      <h1 class="text-lg font-[400]">Date Sampled</h1>
+                      <input class="w-full border  border-solid border-gray-300 border-1 p-2 rounded-[5px] focus:outline-none" type="date" v-model="dateSampled" placeholder="dd-mm-yyyy">
+                    </div>
                 </div>
             </section>
                 <!-- <div class="flex justify-start items-end w-fit  my-[15px] px-[30px] mr-0 ml-auto">
                     <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">Add more</button>
                </div> -->
-            <div @click="addClient" class="flex justify-start items-end  my-[15px] px-[30px]">
+            <div @click="addClient" class="flex justify-end items-end  my-[15px] px-[30px]">
                 <button class="bg-black text-white px-[35px] py-[10px] font-[600] rounded-lg">
                     <div v-if="isLoading" class="w-full justify-center flex space-x-4 items-center">
                       <span>Please wait</span>

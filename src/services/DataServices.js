@@ -94,7 +94,7 @@ export async function getClientById(id) {
 
 export async function editSample(client, sample, data) {
     try {
-        const response = await http.put(`/client/${client}/samples/${sample}`, data)
+        const response = await http.post(`/client/${client}/samples/${sample}`, data)
         return response;
     }
     catch (error) {

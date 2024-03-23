@@ -140,7 +140,7 @@ export default defineComponent({
           <p>36B Oguntona Crescent, Gbagada Phase 1, Lagos State, Nigeria.</p>
         </div>
         <div>
-          <p class="text-[#0000ff] font-bold">Email: <span class="font-normal text-black">info@envaccord.com</span></p>
+          <p class="text-[#0000ff] font-bold">Email: <span class="font-normal text-black">lab@envaccord.com</span></p>
         </div>
         <div>
           <p class="text-[#0000ff] font-bold">Phone: <span class="font-normal text-black text-sm">+2348023609591, +2348136363762</span></p>

@@ -1,10 +1,12 @@
 <script>
 import { defineComponent } from 'vue';
 import { useSampleStore } from '../stores/sample';
+import Footer from '../components/Footer.vue';
 import { getClients, deleteClient } from '../services/DataServices';
 
 
 export default defineComponent({
+    components: {Footer},
     data() {
         return {
             isDeleteModal: false,
@@ -135,7 +137,7 @@ export default defineComponent({
                         <thead class="bg-[#0000fe] text-white h-[8vh]">
                             <th>S/N</th>
                             <th>Client Name</th>
-                            <th>Id</th>
+                            <th>Client's ID</th>
                             <th>Samples</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -143,7 +145,7 @@ export default defineComponent({
                         <tbody>
                             <tr class="text-center h-[7vh] text-[17px] border border-gray-300" v-for="(rows, index) in store.$state.clients" :key="rows.id" :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'">
                                 <td>{{ index+1 }}</td>
-                                <td class="hover:bg-gray-400 cursor-pointer">{{ rows.name }}</td>
+                                <td class="cursor-pointer">{{ rows.name }}</td>
                                 <td>{{ rows.client_id }}</td>
                                 <td>{{ rows?.samples_count }}</td>
                                 <td>{{ rows.received_date.slice(0, 10) }}</td>
@@ -182,7 +184,6 @@ export default defineComponent({
             <p class="w-60 mb-8">There are no clients to view. Click to add client.</p>
             <router-link to="/admin/add-client" class="bg-[#0000fe] text-white px-[35px] py-[10px] font-[600] rounded-lg">Add Clients</router-link>
         </div>
-    
         <div v-if="drop !== null" @click="drop = null" class="h-full w-full absolute top-0 left-0 z-10"></div>
 
         <!-- Delete Modal -->
